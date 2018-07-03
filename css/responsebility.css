@@ -27,4 +27,8 @@
     #restaurants-list li {
         width: 90%;
     }
+
+    #restaurants-list .restaurant-img {
+        min-height: auto;
+    }
 }
