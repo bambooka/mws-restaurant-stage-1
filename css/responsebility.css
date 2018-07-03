@@ -1,4 +1,9 @@
 @media screen and (max-width: 550px) {
+    nav {
+        display: flex;
+        font-size: 10px;
+    }
+
     #maincontent {
        min-width: 100%;
     }
