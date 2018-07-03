@@ -18,4 +18,8 @@
         flex-flow: row wrap;
         justify-content: space-around;
     }
+
+    #restaurants-list li {
+        width: 90%;
+    }
 }
