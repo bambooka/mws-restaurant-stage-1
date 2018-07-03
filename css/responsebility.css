@@ -1,0 +1,34 @@
+@media screen and (max-width: 550px) {
+    nav {
+        display: flex;
+        font-size: 10px;
+    }
+
+    #maincontent {
+       min-width: 100%;
+    }
+
+    .filter-options {
+        display: flex;
+        flex-flow: row wrap;
+        height: auto;
+    }
+
+    .filter-options select {
+        width: 100%;
+    }
+
+    #restaurants-list {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+    }
+
+    #restaurants-list li {
+        width: 90%;
+    }
+
+    #restaurants-list .restaurant-img {
+        min-height: auto;
+    }
+}
