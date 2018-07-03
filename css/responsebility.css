@@ -12,4 +12,10 @@
     .filter-options select {
         width: 100%;
     }
+
+    #restaurants-list {
+        display: flex;
+        flex-flow: row wrap;
+        justify-content: space-around;
+    }
 }
