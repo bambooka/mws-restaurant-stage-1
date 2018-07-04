@@ -38,6 +38,17 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 #maincontent {
   background-color: #f3f3f3;
   min-height: 100%;
+  box-sizing: border-box;
+  width: 50%;
+  padding: 0 40px;
+  margin-top: 130px;
+  padding-bottom: 50px;
+}
+#maincontent section {
+  width: 100%;
+}
+#maincontent section {
+  margin-bottom: 30px;
 }
 #footer {
   background-color: #444;
@@ -242,12 +253,9 @@ nav h1 a {
 #restaurant-container, #reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
-  padding: 140px 40px 30px;
   width: 50%;
 }
-#reviews-container {
-  padding: 30px 40px 80px;
-}
+
 #reviews-container h2 {
   color: #f58500;
   font-size: 24pt;
