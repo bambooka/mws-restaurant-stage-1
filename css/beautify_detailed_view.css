@@ -4,3 +4,32 @@
     border-bottom-right-radius: 25px;
     border-top-left-radius: 25px;
 }
+
+/* Black header of a review block */
+#reviews-list li p:first-child,
+#reviews-list li p:nth-child(2) {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 50px;
+    line-height: 50px;
+    background-color: #333;
+    padding: 0 20px;
+}
+
+#reviews-list li p:first-child {
+    left: 0;
+    font-size: large;
+    color: white;
+}
+
+#reviews-list li p:nth-child(2) {
+    right: 0;
+    text-align: right;
+    color: darkgray;
+}
+
+#reviews-list li {
+    overflow: hidden;
+    padding: 105px 20px 20px;
+}
