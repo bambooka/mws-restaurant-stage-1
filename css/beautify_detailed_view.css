@@ -47,3 +47,9 @@
     letter-spacing: 2px;
     font-weight: bold;
 }
+
+/* Adjust review body font*/
+#reviews-list li p:last-child {
+    font-size: 11pt;
+    color: dimgrey;
+}
