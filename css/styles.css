@@ -82,7 +82,7 @@ nav h1 a {
     background-color: #eee;
     font-size: 17px;
     margin: 0;
-    width: calc(50% - 80px);
+    width: 100%;
     box-sizing: border-box;
 }
 
@@ -217,7 +217,7 @@ nav h1 a {
 .inside #footer {
   bottom: 0;
   position: absolute;
-  width: 50%;
+  width: 100%;
   box-sizing: border-box;
 }
 #restaurant-name {
