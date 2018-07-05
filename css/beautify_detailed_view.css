@@ -1,0 +1,5 @@
+/*Make h1 in center into header*/
+
+.inside header nav {
+    display: flex;
+}
