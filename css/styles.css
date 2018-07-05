@@ -45,9 +45,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 #maincontent section {
   width: 100%;
 }
-#maincontent section {
-  margin-bottom: 30px;
-}
+
 #footer {
   background-color: #444;
   color: #aaa;
@@ -214,7 +212,6 @@ nav h1 a {
 }
 .inside #footer {
   bottom: 0;
-  position: absolute;
   width: 100%;
   box-sizing: border-box;
 }
