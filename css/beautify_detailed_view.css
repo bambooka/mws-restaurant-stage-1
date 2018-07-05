@@ -1,5 +1,6 @@
-/*Make h1 in center into header*/
-
-.inside header nav {
-    display: flex;
+/* Round corners of a restaurant image and review block */
+#restaurant-img,
+#reviews-list li{
+    border-bottom-right-radius: 25px;
+    border-top-left-radius: 25px;
 }
