@@ -39,7 +39,7 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   background-color: #f3f3f3;
   min-height: 100%;
   box-sizing: border-box;
-  width: 50%;
+  width: 100%;
   padding: 0 40px 50px;
   margin-top: 130px;
 }
@@ -202,12 +202,12 @@ nav h1 a {
   z-index: 1000;
 }
 .inside #map-container {
+  height: 400px;
   background: blue none repeat scroll 0 0;
-  height: calc(100% - 80px);
-  position: fixed;
+  position: relative;
   right: 0;
   top: 80px;
-  width: 50%;
+  width: 100%;
 }
 .inside #map {
   background-color: #ccc;
