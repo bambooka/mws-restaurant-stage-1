@@ -33,3 +33,17 @@
     overflow: hidden;
     padding: 105px 20px 20px;
 }
+
+/* Orange rating block */
+#reviews-list li p:nth-child(3) {
+    border-radius: 3px;
+    position: absolute;
+    top: 65px;
+    width: auto;
+    background-color: orange;
+    color: white;
+    padding: 5px 15px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+}
