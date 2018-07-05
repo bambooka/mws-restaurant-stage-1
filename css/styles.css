@@ -39,16 +39,13 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   background-color: #f3f3f3;
   min-height: 100%;
   box-sizing: border-box;
-  width: 50%;
-  padding: 0 40px 50px;
+  width: 100%;
   margin-top: 130px;
 }
 #maincontent section {
   width: 100%;
 }
-#maincontent section {
-  margin-bottom: 30px;
-}
+
 #footer {
   background-color: #444;
   color: #aaa;
@@ -82,7 +79,7 @@ nav h1 a {
     background-color: #eee;
     font-size: 17px;
     margin: 0;
-    width: calc(50% - 80px);
+    width: 100%;
     box-sizing: border-box;
 }
 
@@ -202,12 +199,11 @@ nav h1 a {
   z-index: 1000;
 }
 .inside #map-container {
+  height: 400px;
   background: blue none repeat scroll 0 0;
-  height: calc(100% - 80px);
-  position: fixed;
+  position: relative;
   right: 0;
-  top: 80px;
-  width: 50%;
+  width: 100%;
 }
 .inside #map {
   background-color: #ccc;
@@ -216,8 +212,7 @@ nav h1 a {
 }
 .inside #footer {
   bottom: 0;
-  position: absolute;
-  width: 50%;
+  width: 100%;
   box-sizing: border-box;
 }
 #restaurant-name {
@@ -252,7 +247,8 @@ nav h1 a {
 #restaurant-container, #reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
-  width: 50%;
+  box-sizing: border-box;
+    padding: 0 40px;
 }
 
 #reviews-container h2 {
@@ -275,7 +271,6 @@ nav h1 a {
   overflow: hidden;
   padding: 0 20px 20px;
   position: relative;
-  width: 85%;
 }
 #reviews-list li p {
   margin: 0 0 10px;
