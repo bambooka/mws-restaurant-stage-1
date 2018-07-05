@@ -40,7 +40,6 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   min-height: 100%;
   box-sizing: border-box;
   width: 100%;
-  padding: 0 40px 50px;
   margin-top: 130px;
 }
 #maincontent section {
@@ -206,7 +205,6 @@ nav h1 a {
   background: blue none repeat scroll 0 0;
   position: relative;
   right: 0;
-  top: 80px;
   width: 100%;
 }
 .inside #map {
@@ -252,7 +250,8 @@ nav h1 a {
 #restaurant-container, #reviews-container {
   border-bottom: 1px solid #d9d9d9;
   border-top: 1px solid #fff;
-  width: 50%;
+  box-sizing: border-box;
+    padding: 0 40px;
 }
 
 #reviews-container h2 {
