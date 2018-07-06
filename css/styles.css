@@ -43,7 +43,6 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
   min-height: 100%;
   box-sizing: border-box;
   width: 100%;
-  margin-top: 130px;
 }
 #maincontent section {
   width: 100%;

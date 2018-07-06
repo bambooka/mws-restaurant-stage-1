@@ -1,3 +1,8 @@
+/*Margin-top for main content*/
+.inside #maincontent {
+    margin-top: 130px;
+}
+
 /* Round corners of a restaurant image and review block */
 #restaurant-img,
 #reviews-list li{
