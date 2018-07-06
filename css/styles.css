@@ -46,7 +46,6 @@ article, aside, canvas, details, figcaption, figure, footer, header, hgroup, men
 }
 #maincontent section {
   width: 100%;
-  margin-top: 25px;
 }
 
 #footer {
@@ -119,9 +118,11 @@ nav h1 a {
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
   width: 100%;
-  height: 50px;
+  height: auto;
   background-color: #3397DB;
   align-items: center;
+  padding: 10px;
+  box-sizing: border-box;
 }
 .filter-options h2 {
   color: white;
@@ -137,9 +138,11 @@ nav h1 a {
   font-size: 11pt;
   height: 35px;
   letter-spacing: 0;
-  margin: 10px;
+  margin: 10px 0 10px;
   padding: 0 10px;
-  width: 200px;
+  box-sizing: border-box;
+  display: block;
+  width: 100%;
 }
 
 /* ====================== Restaurant Listing ====================== */
@@ -151,14 +154,14 @@ nav h1 a {
   text-align: center;
 }
 #restaurants-list li {
+  display: inline-block;
   background-color: #fff;
   border: 2px solid #ccc;
   font-family: Arial,sans-serif;
   margin: 15px;
   min-height: 380px;
-  padding: 0 30px 25px;
+  padding: 25px;
   text-align: left;
-  width: 270px;
 }
 #restaurants-list .restaurant-img {
   background-color: #ccc;
