@@ -4,6 +4,7 @@
     "name": "Mission Chinese Food",
     "neighborhood": "Manhattan",
     "photograph": "1.jpg",
+    "alt": "People are sitting around table in restaurant Mission Chinese Food",
     "address": "171 E Broadway, New York, NY 10002",
     "latlng": {
       "lat": 40.713829,
@@ -43,6 +44,7 @@
     "name": "Emily",
     "neighborhood": "Brooklyn",
     "photograph": "2.jpg",
+    "alt": "Pizza on the plate. It's with tomato sauce, cheese and appetizing crust",
     "address": "919 Fulton St, Brooklyn, NY 11238",
     "latlng": {
       "lat": 40.683555,
@@ -82,6 +84,7 @@
     "name": "Kang Ho Dong Baekjeong",
     "neighborhood": "Manhattan",
     "photograph": "3.jpg",
+    "alt": "A room is spacious. Tables are big. Stylish chairs stand around the tables. Big plates lie on the table",
     "address": "1 E 32nd St, New York, NY 10016",
     "latlng": {
       "lat": 40.747143,
@@ -121,6 +124,7 @@
     "name": "Katz's Delicatessen",
     "neighborhood": "Manhattan",
     "photograph": "4.jpg",
+    "alt": "The Restaurant Katz's Delicatessen at night. The restaurant's logo lights red color. People walk beside this restaurant and look in it. The restaurant has big windows and wide door.",
     "address": "205 E Houston St, New York, NY 10002",
     "latlng": {
       "lat": 40.722216,
@@ -160,6 +164,7 @@
     "name": "Roberta's Pizza",
     "neighborhood": "Brooklyn",
     "photograph": "5.jpg",
+    "alt": "Roberta's Pizza. Inside a lot of people sit and eat something. The restaurant is in a casual style. On the wall, the small multicolor lights hang. On the opposite side have a kitchen. The cooks cook food for visitors. One cook is smiling on camera.",
     "address": "261 Moore St, Brooklyn, NY 11206",
     "latlng": {
       "lat": 40.705089,
@@ -199,6 +204,7 @@
     "name": "Hometown BBQ",
     "neighborhood": "Brooklyn",
     "photograph": "6.jpg",
+    "alt": "Hometown BBQ. The restaurant is in a casual style. The walls are very height In the center of the restaurant, people are sitting and eating something. On the opposite side have a people are standing in line to Kassa.",
     "address": "454 Van Brunt St, Brooklyn, NY 11231",
     "latlng": {
       "lat": 40.674925,
@@ -238,6 +244,7 @@
     "name": "Superiority Burger",
     "neighborhood": "Manhattan",
     "photograph": "7.jpg",
+    "alt": "Superiority Burger. It is a black white photo. On the left two men with a dog stand beside by restaurant's door. The door is glass, on it a label *open*. Also, the restaurant has a big window.  The label *Supe Priority Burger* hang above it. Inside the restaurant, visitors are sitting and well spent the time.",
     "address": "430 E 9th St, New York, NY 10009",
     "latlng": {
       "lat": 40.727397,
@@ -277,6 +284,7 @@
     "name": "The Dutch",
     "neighborhood": "Manhattan",
     "photograph": "8.jpg",
+    "alt": "The Dutch. The photo has a signboard with the name of the restaurant: letters are white and the background is blue. On the left of the restaurant a tree with white flowers. On the neighborhood the red building with small windows.",
     "address": "131 Sullivan St, New York, NY 10012",
     "latlng": {
       "lat": 40.726584,
@@ -316,6 +324,7 @@
     "name": "Mu Ramen",
     "neighborhood": "Queens",
     "photograph": "9.jpg",
+    "alt": "Restaurant Mu Ramen. It's a black white photo. At the table visitors are sitting. Men and woman are eating and to do something by the own mobile phones. On the table stand glasses of wine and water, plates with a food",
     "address": "1209 Jackson Ave, Queens, NY 11101",
     "latlng": {
       "lat": 40.743797,
@@ -355,6 +364,7 @@
     "name": "Casa Enrique",
     "neighborhood": "Queens",
     "photograph": "10.jpg",
+    "alt": "Casa Enrique. The restaurant is modern style. The people are absent. Beside a bar counter stand nine white chairs with a round seat. In the main hall the tables stand with white chairs.",
     "address": "5-48 49th Ave, Queens, NY 11101",
     "latlng": {
       "lat": 40.743394,
