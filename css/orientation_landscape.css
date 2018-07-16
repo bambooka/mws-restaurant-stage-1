@@ -1,5 +1,21 @@
 @media screen and (orientation: landscape) and (min-width: 800px) {
 
+    .filter-options select{
+        width: 200px;
+        display: inline-block;
+    }
+
+    #restaurants-list {
+        padding: 30px 0 60px 0;
+        box-sizing: border-box;
+    }
+
+    #restaurants-list li {
+        box-sizing: border-box;
+        width: 50%;
+        margin: 0;
+    }
+
     .inside #breadcrumb,
     .inside #maincontent,
     .inside #footer {
