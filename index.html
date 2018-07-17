@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
@@ -12,25 +12,30 @@
 
 <body>
  
-  <header>
-    <nav>
+  <header aria-label="header">
+    <nav aria-label="navigation to main page">
       <h1><a href="/">Restaurant Reviews</a></h1>
     </nav>
   </header>
 
   <main id="maincontent">
-    <section id="map-container">
+    <section aria-label="google maps" id="map-container">
       <div id="map"></div>
     </section>
     <section>
       <div class="filter-options">
         <h2>Filter Results</h2>
-        <select id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
+
+        <select aria-label="neighborhoods select" id="neighborhoods-select" name="neighborhoods" onchange="updateRestaurants()">
           <option value="all">All Neighborhoods</option>
         </select>
-        <select id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
+          <label for="neighborhoods-select"></label>
+
+        <select aria-label="cuisines select" id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
           <option value="all">All Cuisines</option>
         </select>
+          <label for="cuisines-select"></label>
+
       </div>
       <ul id="restaurants-list"></ul>
     </section>

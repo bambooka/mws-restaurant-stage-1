@@ -31,7 +31,7 @@
 #reviews-list li p:nth-child(2) {
     right: 0;
     text-align: right;
-    color: darkgray;
+    color: #c1c1c1;
 }
 
 #reviews-list li {
@@ -45,7 +45,7 @@
     position: absolute;
     top: 65px;
     width: auto;
-    background-color: orange;
+    background-color: #7e4f00;
     color: white;
     padding: 5px 15px;
     text-transform: uppercase;
