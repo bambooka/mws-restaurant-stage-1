@@ -1,6 +1,6 @@
 @media screen and (orientation: landscape) and (min-width: 800px) {
 
-    .filter-options select{
+    .filter-options select {
         width: 200px;
         display: inline-block;
     }
