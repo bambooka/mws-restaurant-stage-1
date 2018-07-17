@@ -58,6 +58,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
   const image = document.getElementById('restaurant-img');
   image.className = 'restaurant-img'
   image.src = DBHelper.imageUrlForRestaurant(restaurant);
+    image.srcset = DBHelper.imageUrlForRestaurant(restaurant) + ' 550w,' + ' ' + DBHelper.imageSrcSetForRestaurant(restaurant) + ' 1000w';
   image.alt = DBHelper.imageAltForRestaurant(restaurant);
 
   const cuisine = document.getElementById('restaurant-cuisine');
