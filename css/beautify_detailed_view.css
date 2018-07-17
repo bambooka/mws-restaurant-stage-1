@@ -5,7 +5,7 @@
 
 /* Round corners of a restaurant image and review block */
 #restaurant-img,
-#reviews-list li{
+#reviews-list li {
     border-bottom-right-radius: 25px;
     border-top-left-radius: 25px;
 }
