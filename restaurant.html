@@ -22,7 +22,7 @@
         <h1><a href="/">Restaurant Reviews</a></h1>
     </nav>
     <!-- Beginning breadcrumb -->
-    <ul aria-label="breabcrumb" id="breadcrumb">
+    <ul role="navigation" aria-label="breabcrumb" id="breadcrumb">
         <li><a aria-label="Home" href="/">Home</a></li>
     </ul>
     <!-- End breadcrumb -->
@@ -33,13 +33,13 @@
 <!-- Beginning main -->
 <main id="maincontent">
     <!-- Beginning map -->
-    <section id="map-container">
+    <section role="map" id="map-container">
         <div aria-label="google maps" id="map"></div>
     </section>
     <!-- End map -->
     <!-- Beginning restaurant -->
     <section id="restaurant-container">
-        <h1 aria-label="restaurant name" id="restaurant-name"></h1>
+        <h2 aria-label="restaurant name" id="restaurant-name"></h2>
         <img id="restaurant-img">
         <p aria-label="restaurant cuisine" id="restaurant-cuisine"></p>
         <p aria-label="restaurant address" id="restaurant-address"></p>
