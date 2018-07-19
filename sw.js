@@ -1,20 +1,74 @@
-const CACHE = 'network-or-cache-v1';
+const CACHE = 'cache';
+var toCache = [
+    './css/beautify_detailed_view.css',
+    './css/orientation_landscape.css',
+    './data/restaurants.json',
+    './js/index.js',
+    './js/main.js',
+    './js/restaurant_info.js',
+    './js/dbhelper.js',
+    './img/1.jpg',
+    './img/2.jpg',
+    './img/3.jpg',
+    './img/4.jpg',
+    './img/5.jpg',
+    './img/6.jpg',
+    './img/7.jpg',
+    './img/8.jpg',
+    './img/9.jpg',
+    './img/10.jpg',
+    './img/small1.jpg',
+    './img/small2.jpg',
+    './img/small3.jpg',
+    './img/small4.jpg',
+    './img/small5.jpg',
+    './img/small6.jpg',
+    './img/small7.jpg',
+    './img/small9.jpg',
+    './img/small9.jpg',
+    './img/small10.jpg',
+]
 
-// Put into cache
-self.addEventListener('fetch', (event) => {
+// Install and put into cache
+self.addEventListener('install', function (event) {
+
     event.waitUntil(
-        caches.open(CACHE).then((cache) => cache.addAll([
-                event.request
-            ])
-        ));
+        caches.open(CACHE)
+            .then(function (cache) {
+                return cache.addAll(toCache);
+            })
+    );
+});
+
+// Activate
+self.addEventListener('activate', function (event) {
+    event.waitUntil(
+        caches.keys().then(function (cacheNames) {
+            return Promise.all(
+                cacheNames.filter(function (cacheName) {
+                    return cacheName.startsWith('cache') &&
+                        cacheName != CACHE;
+                }).map(function (cacheName) {
+                    return caches.delete(cacheName);
+                })
+            );
+        })
+    );
 });
 
 // Extract from cache
-self.addEventListener('fetch', (event) => {
+self.addEventListener('fetch', function (event) {
+
     event.respondWith(
         caches.match(event.request).then(function (response) {
-            if (response) return response;
-            return fetch(event.request);
+            return response || fetch(event.request);
         })
-    )
-})
+    );
+});
+
+
+self.addEventListener('message', function (event) {
+    if (event.data.action === 'skipWaiting') {
+        self.skipWaiting();
+    }
+});
