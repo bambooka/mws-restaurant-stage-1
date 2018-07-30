@@ -219,7 +219,7 @@ class DBHelper {
     }
 
     static imageAltForRestaurant(restaurant) {
-        return (restaurant.alt);
+        return (`It's ${restaurant.name} restaurant. There has atmosphere this place: glad visitors, modern style, hall and kitchen zone.`);
     }
 
     /**
