@@ -33,20 +33,29 @@ class DBHelper {
     /**
      * Fetch all restaurants.
      */
-    static fetchRestaurants(callback) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', DBHelper.DATABASE_URL);
-        xhr.onload = () => {
-            if (xhr.status === 200) { // Got a success response from server!
-                const json = JSON.parse(xhr.responseText);
-                const restaurants = json.restaurants;
-                callback(null, restaurants);
-            } else { // Oops!. Got an error from server.
-                const error = (`Request failed. Returned status of ${xhr.status}`);
-                callback(error, null);
-            }
-        };
-        xhr.send();
+    static fetchRestaurants(callback, id) {
+        // TODO: would it be better to make the DB calls synchronously instead?
+        dbPromise.then(db => {
+            db.transaction(currentStore).objectStore(currentStore)
+                .getAll().then(restaurants => {
+
+                if (restaurants.length > 0) {
+                    callback(null, restaurants);
+                    return;
+                }
+
+                // In case of an empty DB, fetch restaurants from the network
+                console.log('db is empty');
+                DBHelper.fetchRestaurantsFromNetwork((error, restaurants) => {
+                    if (restaurants != null) {
+                        DBHelper.storeRestaurantsInDatabase(restaurants)
+                    }
+                    callback(error, restaurants);
+                });
+            });
+        }).catch(reason => {
+            callback(`db failed. ${reason}`, null);
+        });
     }
 
     /**
