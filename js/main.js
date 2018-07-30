@@ -179,3 +179,14 @@ addMarkersToMap = (restaurants = self.restaurants) => {
         self.markers.push(marker);
     });
 };
+
+/**
+ * Show a map after click by button
+ */
+document.getElementById('showMap').addEventListener('click', () => {
+    initMap();
+    document.getElementById('showMap').style.display = 'none';
+    document.getElementById('map-container').style.display = 'block';
+    document.getElementById('map').style.display = 'block';
+
+});

@@ -163,3 +163,14 @@ getParameterByName = (name, url) => {
         return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
+
+/**
+ * Show a map after click by button
+ */
+document.getElementById('showDetailedMap').addEventListener('click', () => {
+    initMap();
+    document.getElementById('showDetailedMap').style.display = 'none';
+    document.getElementById('map-container').style.display = 'block';
+    document.getElementById('map').style.display = 'block';
+
+});
