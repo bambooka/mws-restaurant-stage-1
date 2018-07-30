@@ -128,6 +128,9 @@ nav h1 a {
     height: 400px;
     width: 100%;
     background-color: #ccc;
+}
+
+#map-container {
     display: none;
 }
 
@@ -233,14 +236,12 @@ nav h1 a {
     position: relative;
     right: 0;
     width: 100%;
-    display: none;
 }
 
 .inside #map {
     background-color: #ccc;
     height: 100%;
     width: 100%;
-    display: none;
 }
 
 .inside #footer {
@@ -323,6 +324,10 @@ nav h1 a {
 
 /* Button showMap */
 
-#showMap, #showDetailedMap {
+#showMap{
     width: 100%;
+    height: 60px;
+    font-size: 170%;
+    background-color: #7e4f00;
+    color: #fff;
 }
