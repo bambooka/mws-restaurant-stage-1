@@ -1,3 +1,20 @@
+const dbName = 'restaurantDB';
+const currentVersion = 1;
+const currentStore = 'restaurantStore';
+
+const dbPromise = idb.open(dbName, currentVersion, upgradeDB => {
+    // Note: we don't use 'break' in this switch statement,
+    // the fall-through behaviour is what we want.
+    // See https://github.com/jakearchibald/idb
+    // noinspection FallThroughInSwitchStatementJS
+    switch (upgradeDB.oldVersion) {
+        case 0:
+            upgradeDB.createObjectStore('restaurantStore', {keyPath: 'id'});
+        case 1:
+        // TODO: upgrade from v.1 to v.2 if needed;
+    }
+});
+
 /**
  * Common database helper functions.
  */
@@ -8,8 +25,8 @@ class DBHelper {
      * Change this to restaurants.json file location on your server.
      */
     static get DATABASE_URL() {
-        const port = 1337; // TODO: Change this to your server port
-        const domain = 'localhost';  // TODO: Change this to your domain name
+        const port = 1337;
+        const domain = 'localhost';
         return `http://${domain}:${port}/restaurants`;
     }
 
