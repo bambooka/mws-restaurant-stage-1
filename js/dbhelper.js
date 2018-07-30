@@ -207,15 +207,19 @@ class DBHelper {
      * Restaurant image URL.
      */
     static imageUrlForRestaurant(restaurant) {
-        return (`/img/${restaurant.photograph}`);
+        return restaurant.photograph ? `/img/${restaurant.photograph}.jpg` : '/img/placeholder.jpg';
     }
 
+    /**
+     * Restaurant responsive image URL.
+     */
     static imageSrcSetForRestaurant(restaurant) {
-        return ('/img/small' + restaurant.photograph);
+        let photoId = restaurant.photograph ? restaurant.photograph : 'placeholder';
+        return `/img/small${photoId}.jpg 550w, /img/${photoId}.jpg 1000w`;
     }
 
     static imageAltForRestaurant(restaurant) {
-        return (restaurant.alt);
+        return (`It's ${restaurant.name} restaurant. There has atmosphere this place: glad visitors, modern style, hall and kitchen zone.`);
     }
 
     /**
@@ -232,5 +236,4 @@ class DBHelper {
         );
         return marker;
     }
-
 }

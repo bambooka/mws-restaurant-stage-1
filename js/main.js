@@ -10,6 +10,7 @@ var markers = []
 document.addEventListener('DOMContentLoaded', (event) => {
     fetchNeighborhoods();
     fetchCuisines();
+    updateRestaurants();
 });
 
 /**
@@ -80,7 +81,7 @@ window.initMap = () => {
         center: loc,
         scrollwheel: false
     });
-    updateRestaurants();
+    addMarkersToMap();
 }
 
 /**
@@ -129,7 +130,6 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
     restaurants.forEach(restaurant => {
         ul.append(createRestaurantHTML(restaurant));
     });
-    addMarkersToMap();
 }
 
 /**
@@ -141,7 +141,7 @@ createRestaurantHTML = (restaurant) => {
     const image = document.createElement('img');
     image.className = 'restaurant-img';
     image.src = DBHelper.imageUrlForRestaurant(restaurant);
-    image.srcset = DBHelper.imageUrlForRestaurant(restaurant) + ' 550w,' + ' ' + DBHelper.imageSrcSetForRestaurant(restaurant) + ' 1000w';
+    image.srcset = DBHelper.imageSrcSetForRestaurant(restaurant);
     image.alt = DBHelper.imageAltForRestaurant(restaurant);
     li.append(image);
 
@@ -179,3 +179,22 @@ addMarkersToMap = (restaurants = self.restaurants) => {
         self.markers.push(marker);
     });
 };
+
+/**
+ * Show a map on button click
+ */
+document.getElementById('showMap').addEventListener('click', (event) => {
+    // TODO: there should be a way to refer to the click source
+    // event.fromElement.hide...
+    document.getElementById('showMap').style.display = 'none';
+
+    // TODO: consider hiding one of the elements (to also hide its children)
+    document.getElementById('map-container').style.display = 'block';
+
+    let script = document.createElement("script");
+
+    script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBgkQ0weVRwuYq0vm5BVvaNXAArbBahbKA&libraries=places&callback=initMap';
+    script.type = 'text/javascript';
+
+    document.getElementsByTagName('head')[0].appendChild(script);
+});
