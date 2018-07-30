@@ -58,6 +58,17 @@ class DBHelper {
         });
     }
 
+    static fetchRestaurantsFromNetwork(callback) {
+        let fetchURL = DBHelper.DATABASE_URL;
+        fetch(fetchURL, {method: 'GET'}).then(response => {
+            response.json().then(restaurants => {
+                callback(null, restaurants);
+            });
+        }).catch(error => {
+            callback(`network request failed. returned ${error}`, null);
+        });
+    }
+
     /**
      * Fetch a restaurant by its ID.
      */
