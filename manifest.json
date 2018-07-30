@@ -1,0 +1,17 @@
+{
+    "short_name": "RestoReviews",
+    "name": "Restaurant Review",
+    "start_url": "index.html",
+    "background_color": "blue",
+    "theme_color": "#262932",
+    "display": "fullscreen",
+    "manifest_version": 1,
+    "version": "1.0",
+    "icons": [
+        {"src": "img/icon/icon_48.jpeg", "type": "image/jpeg", "sizes": "48x48"},
+        {"src": "img/icon/icon_90.jpeg", "type": "image/jpeg", "sizes": "90x90"},
+        {"src": "img/icon/icon_192.jpeg", "type": "image/jpeg", "sizes": "192x192"},
+        {"src": "img/icon/icon_256.jpeg", "type": "image/jpeg", "sizes": "256x256"},
+        {"src": "img/icon/icon_512.jpeg", "type": "image/jpeg", "sizes": "512x512"}
+    ]
+}
