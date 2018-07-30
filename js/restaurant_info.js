@@ -21,6 +21,17 @@ window.initMap = () => {
 };
 
 /**
+ * Show a map after click by button
+ */
+document.getElementById('showMap').addEventListener('click', () => {
+    initMap();
+    document.getElementById('showMap').style.display = 'none';
+    document.getElementById('map-container').style.display = 'block';
+    document.getElementById('map').style.display = 'block';
+
+});
+
+/**
  * Get current restaurant from page URL.
  */
 fetchRestaurantFromURL = (callback) => {
@@ -164,13 +175,3 @@ getParameterByName = (name, url) => {
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
 
-/**
- * Show a map after click by button
- */
-document.getElementById('showDetailedMap').addEventListener('click', () => {
-    initMap();
-    document.getElementById('showDetailedMap').style.display = 'none';
-    document.getElementById('map-container').style.display = 'block';
-    document.getElementById('map').style.display = 'block';
-
-});
