@@ -58,6 +58,9 @@ class DBHelper {
         });
     }
 
+    /*
+     * Fetch restaurants from network, if database is empty
+     */
     static fetchRestaurantsFromNetwork(callback) {
         let fetchURL = DBHelper.DATABASE_URL;
         fetch(fetchURL, {method: 'GET'}).then(response => {
@@ -66,6 +69,19 @@ class DBHelper {
             });
         }).catch(error => {
             callback(`network request failed. returned ${error}`, null);
+        });
+    }
+
+    /*
+     * Store restaurants into database
+     */
+    static storeRestaurantsInDatabase(restaurants) {
+        console.log('store restaurants in the db');
+        dbPromise.then(db => {
+            const tx = db.transaction(currentStore, 'readwrite');
+            restaurants.forEach(restaurant => {
+                tx.objectStore(currentStore).put(restaurant);
+            });
         });
     }
 
