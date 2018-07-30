@@ -2,6 +2,9 @@ const dbName = 'restaurantDB';
 const currentVersion = 1;
 const currentStore = 'restaurantStore';
 
+/*
+ * Open database
+ */
 const dbPromise = idb.open(dbName, currentVersion, upgradeDB => {
     // Note: we don't use 'break' in this switch statement,
     // the fall-through behaviour is what we want.
@@ -22,7 +25,6 @@ class DBHelper {
 
     /**
      * Database URL.
-     * Change this to restaurants.json file location on your server.
      */
     static get DATABASE_URL() {
         const port = 1337;
@@ -35,6 +37,7 @@ class DBHelper {
      */
     static fetchRestaurants(callback, id) {
         // TODO: would it be better to make the DB calls synchronously instead?
+        // First try to fetch restaurants from the database
         dbPromise.then(db => {
             db.transaction(currentStore).objectStore(currentStore)
                 .getAll().then(restaurants => {
@@ -59,7 +62,7 @@ class DBHelper {
     }
 
     /*
-     * Fetch restaurants from network, if database is empty
+     * Fetch restaurants from the network, if the database is empty
      */
     static fetchRestaurantsFromNetwork(callback) {
         let fetchURL = DBHelper.DATABASE_URL;
@@ -73,7 +76,7 @@ class DBHelper {
     }
 
     /*
-     * Store restaurants into database
+     * Store restaurants into the database
      */
     static storeRestaurantsInDatabase(restaurants) {
         console.log('store restaurants in the db');
