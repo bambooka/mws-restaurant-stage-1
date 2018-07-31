@@ -34,3 +34,9 @@ gulp.task('minCSS', () => {
         }))
         .pipe(gulp.dest('./dist/'));
 });
+
+gulp.task('gulp-uglify', function(){
+    gulp.src('./test/script.min.js')
+        .pipe(uglify())
+        .pipe(gulp.dest('./dist/'))
+});
