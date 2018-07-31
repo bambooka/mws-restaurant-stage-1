@@ -25,3 +25,12 @@ gulp.task('concat', function(){
         .pipe(concat('script.min.js'))
         .pipe(gulp.dest('./test/'))
 });
+
+gulp.task('minCSS', () => {
+    return gulp.src('./test/style.min.css')
+        .pipe(minCSS({debug: true}, (details) => {
+            console.log(`${details.name}: ${details.stats.originalSize}`);
+            console.log(`${details.name}: ${details.stats.minifiedSize}`);
+        }))
+        .pipe(gulp.dest('./dist/'));
+});
