@@ -1,3 +1,23 @@
+const dbName = 'restaurantDB';
+const currentVersion = 1;
+const currentStore = 'restaurantStore';
+
+/*
+ * Open database
+ */
+const dbPromise = idb.open(dbName, currentVersion, upgradeDB => {
+    // Note: we don't use 'break' in this switch statement,
+    // the fall-through behaviour is what we want.
+    // See https://github.com/jakearchibald/idb
+    // noinspection FallThroughInSwitchStatementJS
+    switch (upgradeDB.oldVersion) {
+        case 0:
+            upgradeDB.createObjectStore('restaurantStore', {keyPath: 'id'});
+        case 1:
+        // TODO: upgrade from v.1 to v.2 if needed;
+    }
+});
+
 /**
  * Common database helper functions.
  */
@@ -5,30 +25,67 @@ class DBHelper {
 
     /**
      * Database URL.
-     * Change this to restaurants.json file location on your server.
      */
     static get DATABASE_URL() {
-        const port = 80; // Change this to your server port
-        return `http://restaurant-reviews.localhost:${port}/data/restaurants.json`;
+        const port = 1337;
+        const domain = 'localhost';
+        return `http://${domain}:${port}/restaurants`;
     }
 
     /**
      * Fetch all restaurants.
      */
-    static fetchRestaurants(callback) {
-        let xhr = new XMLHttpRequest();
-        xhr.open('GET', DBHelper.DATABASE_URL);
-        xhr.onload = () => {
-            if (xhr.status === 200) { // Got a success response from server!
-                const json = JSON.parse(xhr.responseText);
-                const restaurants = json.restaurants;
+    static fetchRestaurants(callback, id) {
+        // TODO: would it be better to make the DB calls synchronously instead?
+        // First try to fetch restaurants from the database
+        dbPromise.then(db => {
+            db.transaction(currentStore).objectStore(currentStore)
+                .getAll().then(restaurants => {
+
+                if (restaurants.length > 0) {
+                    callback(null, restaurants);
+                    return;
+                }
+
+                // In case of an empty DB, fetch restaurants from the network
+                console.log('db is empty');
+                DBHelper.fetchRestaurantsFromNetwork((error, restaurants) => {
+                    if (restaurants != null) {
+                        DBHelper.storeRestaurantsInDatabase(restaurants)
+                    }
+                    callback(error, restaurants);
+                });
+            });
+        }).catch(reason => {
+            callback(`db failed. ${reason}`, null);
+        });
+    }
+
+    /*
+     * Fetch restaurants from the network, if the database is empty
+     */
+    static fetchRestaurantsFromNetwork(callback) {
+        let fetchURL = DBHelper.DATABASE_URL;
+        fetch(fetchURL, {method: 'GET'}).then(response => {
+            response.json().then(restaurants => {
                 callback(null, restaurants);
-            } else { // Oops!. Got an error from server.
-                const error = (`Request failed. Returned status of ${xhr.status}`);
-                callback(error, null);
-            }
-        };
-        xhr.send();
+            });
+        }).catch(error => {
+            callback(`network request failed. returned ${error}`, null);
+        });
+    }
+
+    /*
+     * Store restaurants into the database
+     */
+    static storeRestaurantsInDatabase(restaurants) {
+        console.log('store restaurants in the db');
+        dbPromise.then(db => {
+            const tx = db.transaction(currentStore, 'readwrite');
+            restaurants.forEach(restaurant => {
+                tx.objectStore(currentStore).put(restaurant);
+            });
+        });
     }
 
     /**
@@ -150,15 +207,19 @@ class DBHelper {
      * Restaurant image URL.
      */
     static imageUrlForRestaurant(restaurant) {
-        return (`/img/${restaurant.photograph}`);
+        return restaurant.photograph ? `/img/${restaurant.photograph}.jpg` : '/img/placeholder.jpg';
     }
 
+    /**
+     * Restaurant responsive image URL.
+     */
     static imageSrcSetForRestaurant(restaurant) {
-        return ('/img/small' + restaurant.photograph);
+        let photoId = restaurant.photograph ? restaurant.photograph : 'placeholder';
+        return `/img/small${photoId}.jpg 550w, /img/${photoId}.jpg 1000w`;
     }
 
     static imageAltForRestaurant(restaurant) {
-        return (restaurant.alt);
+        return (`It's ${restaurant.name} restaurant. There has atmosphere this place: glad visitors, modern style, hall and kitchen zone.`);
     }
 
     /**
@@ -175,5 +236,4 @@ class DBHelper {
         );
         return marker;
     }
-
 }

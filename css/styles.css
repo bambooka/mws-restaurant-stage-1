@@ -130,6 +130,10 @@ nav h1 a {
     background-color: #ccc;
 }
 
+#map-container {
+    display: none;
+}
+
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
     width: 100%;
@@ -316,4 +320,14 @@ nav h1 a {
 
 #restaurant-hours td {
     color: #666;
+}
+
+/* Button showMap */
+
+#showMap{
+    width: 100%;
+    height: 60px;
+    font-size: 170%;
+    background-color: #7e4f00;
+    color: #fff;
 }

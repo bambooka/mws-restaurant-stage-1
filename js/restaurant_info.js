@@ -2,23 +2,50 @@ let restaurant;
 var map;
 
 /**
- * Initialize Google map, called from HTML.
+ * Fetch restaurants as soon as the page is loaded.
  */
-window.initMap = () => {
+document.addEventListener('DOMContentLoaded', (event) => {
     fetchRestaurantFromURL((error, restaurant) => {
         if (error) { // Got an error!
             console.error(error);
         } else {
-            self.map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 16,
-                center: restaurant.latlng,
-                scrollwheel: false
-            });
             fillBreadcrumb();
-            DBHelper.mapMarkerForRestaurant(self.restaurant, self.map);
         }
     });
+});
+
+/**
+ * Initialize Google map, called from HTML.
+ */
+window.initMap = () => {
+    if (self.restaurant) { // restaurant already fetched!
+        self.map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 16,
+            center: self.restaurant.latlng,
+            scrollwheel: false
+        });
+        DBHelper.mapMarkerForRestaurant(self.restaurant, self.map); // TODO: does it really do anything?
+    }
 };
+
+/**
+ * Show a map on button click
+ */
+document.getElementById('showMap').addEventListener('click', () => {
+    // TODO: there should be a way to refer to the click source
+    // event.fromElement.hide...
+    document.getElementById('showMap').style.display = 'none';
+
+    // TODO: consider hiding one of the elements (to also hide its children)
+    document.getElementById('map-container').style.display = 'block';
+
+    let script = document.createElement("script");
+
+    script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBgkQ0weVRwuYq0vm5BVvaNXAArbBahbKA&libraries=places&callback=initMap';
+    script.type = 'text/javascript';
+
+    document.getElementsByTagName('head')[0].appendChild(script);
+});
 
 /**
  * Get current restaurant from page URL.
@@ -58,7 +85,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
     const image = document.getElementById('restaurant-img');
     image.className = 'restaurant-img';
     image.src = DBHelper.imageUrlForRestaurant(restaurant);
-    image.srcset = DBHelper.imageUrlForRestaurant(restaurant) + ' 550w,' + ' ' + DBHelper.imageSrcSetForRestaurant(restaurant) + ' 1000w';
+    image.srcset = DBHelper.imageSrcSetForRestaurant(restaurant);
     image.alt = DBHelper.imageAltForRestaurant(restaurant);
 
     const cuisine = document.getElementById('restaurant-cuisine');
@@ -163,3 +190,4 @@ getParameterByName = (name, url) => {
         return '';
     return decodeURIComponent(results[2].replace(/\+/g, ' '));
 };
+
