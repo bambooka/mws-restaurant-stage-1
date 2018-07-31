@@ -15,16 +15,17 @@ gulp.task('browserSync', function(){
 });
 
 gulp.task('concat', function(){
+    return gulp.src(['./js/idb.js', './js/dbhelper.js','./js/main.js','./js/index.js'])
+        .pipe(concat('script.min.js'))
+        .pipe(gulp.dest('./test/'))
+});
+
+gulp.task('concat', function(){
     return gulp.src(['./css/styles.css','./css/beautify_detailed_view.css','./css/orientation_landscape.css'])
         .pipe(concat('style.min.css'))
         .pipe(gulp.dest('./test/'))
 });
 
-gulp.task('concat', function(){
-    return gulp.src(['./js/idb.js', './js/dbhelper.js','./js/main.js','./js/index.js'])
-        .pipe(concat('script.min.js'))
-        .pipe(gulp.dest('./test/'))
-});
 
 gulp.task('minCSS', () => {
     return gulp.src('./test/style.min.css')
