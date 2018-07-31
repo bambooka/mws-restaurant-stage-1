@@ -13,7 +13,6 @@ var toCache = [
     'restaurant.html?id=10',
     './css/beautify_detailed_view.css',
     './css/orientation_landscape.css',
-    './data/restaurants.json',
     './js/index.js',
     './js/main.js',
     './js/restaurant_info.js',
@@ -39,7 +38,7 @@ var toCache = [
     './img/small7.jpg',
     './img/small9.jpg',
     './img/small9.jpg',
-    './img/small10.jpg',
+    './img/small10.jpg'
 ]
 
 // Install and put into cache
