@@ -13,3 +13,9 @@ gulp.task('browserSync', function(){
         }
     })
 });
+
+gulp.task('concat', function(){
+    return gulp.src(['./css/styles.css','./css/beautify_detailed_view.css','./css/orientation_landscape.css'])
+        .pipe(concat('style.min.css'))
+        .pipe(gulp.dest('./test/'))
+});
