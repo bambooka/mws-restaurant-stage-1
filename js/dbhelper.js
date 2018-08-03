@@ -1,6 +1,6 @@
 const dbName = 'restaurantDB';
 const currentVersion = 1;
-const currentStore = 'restaurantStore';
+const restaurantStore = 'restaurantStore';
 
 /*
  * Open database
@@ -39,7 +39,7 @@ class DBHelper {
         // TODO: would it be better to make the DB calls synchronously instead?
         // First try to fetch restaurants from the database
         dbPromise.then(db => {
-            db.transaction(currentStore).objectStore(currentStore)
+            db.transaction(restaurantStore).objectStore(restaurantStore)
                 .getAll().then(restaurants => {
 
                 if (restaurants.length > 0) {
@@ -81,9 +81,9 @@ class DBHelper {
     static storeRestaurantsInDatabase(restaurants) {
         console.log('store restaurants in the db');
         dbPromise.then(db => {
-            const tx = db.transaction(currentStore, 'readwrite');
+            const tx = db.transaction(restaurantStore, 'readwrite');
             restaurants.forEach(restaurant => {
-                tx.objectStore(currentStore).put(restaurant);
+                tx.objectStore(restaurantStore).put(restaurant);
             });
         });
     }
@@ -235,5 +235,20 @@ class DBHelper {
             }
         );
         return marker;
+    }
+
+    static updateFavoriteStatus(restaurantId, isFavorite) {
+        fetch(`${this.DATABASE_URL}/${restaurantId}/?is_favorite=${isFavorite}`, {method: 'PUT'}).then(() => {
+
+            dbPromise.then(db => {
+                const tx = db.transaction(restaurantStore,'readwrite');
+                const restoStore = tx.objectStore(restaurantStore);
+                restoStore.get(restaurantId).then(restaurant => {
+                    restaurant.is_favorite = isFavorite;
+                    restoStore.put(restaurant);
+                })
+            })
+        })
+
     }
 }

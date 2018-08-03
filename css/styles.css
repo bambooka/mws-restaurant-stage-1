@@ -331,3 +331,19 @@ nav h1 a {
     background-color: #7e4f00;
     color: #fff;
 }
+
+.button_marks_favorite {
+    background-color: white;
+    border: none;
+    font-size: 40px;
+    width: 100%;
+}
+
+.favorite {
+    color: red;
+}
+
+.no_favorite {
+    color: darkgray;
+}
+

@@ -149,6 +149,32 @@ createRestaurantHTML = (restaurant) => {
     name.innerHTML = restaurant.name;
     li.append(name);
 
+    changeFavElementClass = (el, fav) => {
+        if (fav) {
+            el.classList.remove('no_favorite');
+            el.classList.add('favorite');
+            el.setAttribute('aria-label', 'mark as favorite')
+        } else {
+            el.classList.remove('favorite');
+            el.classList.add('no_favorite');
+            el.setAttribute('aria-label', 'mark as no favorite')
+        }
+    };
+
+    const favorite_mark = document.createElement('button');
+    favorite_mark.innerHTML = '\t&#10084;';
+    favorite_mark.classList.add('button_marks_favorite');
+
+    favorite_mark.onclick = function () {
+        const isFavorite = !restaurant.is_favorite;
+        DBHelper.updateFavoriteStatus(restaurant.id, isFavorite);
+        restaurant.is_favorite = !restaurant.is_favorite;
+        changeFavElementClass(favorite_mark, restaurant.is_favorite);
+    };
+    changeFavElementClass(favorite_mark, restaurant.is_favorite);
+
+    li.append(favorite_mark);
+
     const neighborhood = document.createElement('p');
     neighborhood.innerHTML = restaurant.neighborhood;
     li.append(neighborhood);
