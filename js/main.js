@@ -149,6 +149,18 @@ createRestaurantHTML = (restaurant) => {
     name.innerHTML = restaurant.name;
     li.append(name);
 
+    changeFavElementClass = (el, fav) => {
+        if (!fav) {
+            el.classList.remove('favorite_yes');
+            el.classList.add('favorite_no');
+            el.setAttribute('aria-label', 'mark as favorite')
+        } else {
+            el.classList.remove('favorite_yes');
+            el.classList.add('favorite_no');
+            el.setAttribute('aria-label', 'mark as no favorite')
+        }
+    };
+
     const favorite_mark = document.createElement('button');
     favorite_mark.innerHTML = '\t&#10084;';
     favorite_mark.classList.add('fav_mark');
