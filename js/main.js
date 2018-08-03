@@ -163,7 +163,7 @@ createRestaurantHTML = (restaurant) => {
 
     const favorite_mark = document.createElement('button');
     favorite_mark.innerHTML = '\t&#10084;';
-    favorite_mark.classList.add('fav_mark');
+    favorite_mark.classList.add('button_marks_favorite');
 
     favorite_mark.onclick = function () {
         const isFavorite = !restaurant.is_favorite;

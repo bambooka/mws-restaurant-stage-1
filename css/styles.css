@@ -332,8 +332,11 @@ nav h1 a {
     color: #fff;
 }
 
-.fav_mark {
-    color: darkgray;
+.button_marks_favorite {
+    background-color: white;
+    border: none;
+    font-size: 40px;
+    width: 100%;
 }
 
 .favorite {
