@@ -336,11 +336,11 @@ nav h1 a {
     color: darkgray;
 }
 
-.fav_mark:hover {
+.favorite {
     color: red;
 }
 
-.fav_mark:active {
-    color: red;
+.no_favorite {
+    color: darkgray;
 }
 

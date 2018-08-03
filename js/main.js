@@ -150,13 +150,13 @@ createRestaurantHTML = (restaurant) => {
     li.append(name);
 
     changeFavElementClass = (el, fav) => {
-        if (!fav) {
-            el.classList.remove('favorite_yes');
-            el.classList.add('favorite_no');
+        if (fav) {
+            el.classList.remove('no_favorite');
+            el.classList.add('favorite');
             el.setAttribute('aria-label', 'mark as favorite')
         } else {
-            el.classList.remove('favorite_yes');
-            el.classList.add('favorite_no');
+            el.classList.remove('favorite');
+            el.classList.add('no_favorite');
             el.setAttribute('aria-label', 'mark as no favorite')
         }
     };
@@ -166,17 +166,13 @@ createRestaurantHTML = (restaurant) => {
     favorite_mark.classList.add('fav_mark');
 
     favorite_mark.onclick = function () {
-        if (favorite_mark.style.color === 'darkgray') {
-            favorite_mark.style.color = 'red';
-        } else if (favorite_mark.style.color === 'red'){
-            favorite_mark.style.color = 'darkgray';
-        }
         const isFavorite = !restaurant.is_favorite;
         DBHelper.updateFavoriteStatus(restaurant.id, isFavorite);
         restaurant.is_favorite = !restaurant.is_favorite;
+        changeFavElementClass(favorite_mark, restaurant.is_favorite);
     };
-
     changeFavElementClass(favorite_mark, restaurant.is_favorite);
+
     li.append(favorite_mark);
 
     const neighborhood = document.createElement('p');
