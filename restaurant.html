@@ -10,8 +10,8 @@
     <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css"/>
     <!-- Main CSS file -->
     <link rel="stylesheet" href="css/styles.css" type="text/css">
-    <link rel="stylesheet" href="css/orientation_landscape.css.css" type="text/css">
-    <link rel="stylesheet" href="css/beautify_detailed_view.css.css" type="text/css">
+    <link rel="stylesheet" href="css/orientation_landscape.css" type="text/css">
+    <link rel="stylesheet" href="css/beautify_detailed_view.css" type="text/css">
     <meta name="Description" content="Restaurant Reviews Application.">
     <link rel="manifest" href="manifest.json">
     <title>Restaurant Info</title>
@@ -52,6 +52,14 @@
     </section>
     <!-- end restaurant -->
     <!-- Beginning reviews -->
+    <form id="review-form">
+        <h4 id="reviews-header">Add new review</h4>
+        <input type="text" id="reviewer-name" placeholder="Your name"><br>
+        <input type="text" id="id-restaurant" placeholder="Id restaurant"><br>
+        <input  type="text" id="rating-score" placeholder="Rate this restaurants"><br>
+        <textarea id="text-review" placeholder="Type review to here"></textarea><br>
+        <input type="submit" id="submit-review" value="Submit review">
+    </form>
     <section id="reviews-container">
         <ul aria-label="restaurants reviews" id="reviews-list"></ul>
     </section>
