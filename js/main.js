@@ -149,6 +149,24 @@ createRestaurantHTML = (restaurant) => {
     name.innerHTML = restaurant.name;
     li.append(name);
 
+    const favorite_mark = document.createElement('button');
+    favorite_mark.innerHTML = '\t&#10084;';
+    favorite_mark.classList.add('fav_mark');
+
+    favorite_mark.onclick = function () {
+        if (favorite_mark.style.color === 'darkgray') {
+            favorite_mark.style.color = 'red';
+        } else if (favorite_mark.style.color === 'red'){
+            favorite_mark.style.color = 'darkgray';
+        }
+        const isFavorite = !restaurant.is_favorite;
+        DBHelper.updateFavoriteStatus(restaurant.id, isFavorite);
+        restaurant.is_favorite = !restaurant.is_favorite;
+    };
+
+    changeFavElementClass(favorite_mark, restaurant.is_favorite);
+    li.append(favorite_mark);
+
     const neighborhood = document.createElement('p');
     neighborhood.innerHTML = restaurant.neighborhood;
     li.append(neighborhood);
