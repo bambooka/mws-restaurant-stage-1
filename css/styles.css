@@ -331,3 +331,16 @@ nav h1 a {
     background-color: #7e4f00;
     color: #fff;
 }
+
+.fav_mark {
+    color: darkgray;
+}
+
+.fav_mark:hover {
+    color: red;
+}
+
+.fav_mark:active {
+    color: red;
+}
+
