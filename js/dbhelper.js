@@ -421,61 +421,26 @@ class DBHelper {
     }
 
     /**
-     * Filter reviews by restaurant name
+     * Filter reviews by restaurant id
      */
-
-    static filterReviewsByRestaurantId2(id) {
-        DBHelper.fetchReviews(id).then(reviews => {
-            dbPromise.then(db => {
-                const tx = db.transaction(reviewsStore);
-                const reviewStore = tx.objectStore(reviewsStore);
-                const restaurantIndex = reviewStore.index('restaurant');
-
-                return restaurantIndex.getAll(id);
-            }).then(() => {
-                const filtered = reviews.filter(review => review.restaurant_id === id);
-                return filtered;
-            });
-            callback(null, reviews);
-        })
-    }
-
-    static filterReviewsByRestaurantId(id) {
+    static filterReviewsByRestaurantId(id, callback) {
         return DBHelper.fetchReviews((error, reviews) => {
 
-            dbPromise.then(db => {
-                const tx = db.transaction(reviewStore);
-                const reviewsStore = tx.objectStore(reviewStore);
-                const restaurantIndex = reviewsStore.index('restaurant');
+            if (error) {
+                callback(error, null);
+            } else {
+                const filter_reviews = reviews.filter(r => r.restaurant_id === id);
+                if (filter_reviews) { // Got the reviews
+                    callback(null, filter_reviews);
+                } else { // Reviews does not exist in the database
+                    callback('Reviews does not exist', null);
+                }
+            }
 
-                return restaurantIndex.getAll(id);
-            }).then(reviews => {
+        });
 
-                    const filter_review = reviews.filter(r => r.restaurant_id === id);
-                    console.log(filter_review);
-                return filter_review;
-            });
-
-            callback(null, reviews);
-        })
     }
 
-
-    static fetchReviewsAboutOneRestaurant(id) {
-        let fetchReviewsAboutRestURL = `http://localhost:1337/reviews/?restaurant_id=${id}`;
-
-        fetch(fetchReviewsAboutRestURL).then(response => response.json()).then(reviews => {
-            dbPromise.then(db => {
-                if (!db) return;
-                let tx = db.transaction(reviewStore, 'readwrite');
-                const store = tx.objectStore(reviewStore);
-
-                reviews.forEach(review => {
-                    store.put(review);
-                })
-            })
-        })
-    }
 
 }
 
