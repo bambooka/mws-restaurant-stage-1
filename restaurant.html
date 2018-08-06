@@ -10,8 +10,8 @@
     <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css"/>
     <!-- Main CSS file -->
     <link rel="stylesheet" href="css/styles.css" type="text/css">
-    <link rel="stylesheet" href="css/orientation_landscape.css.css" type="text/css">
-    <link rel="stylesheet" href="css/beautify_detailed_view.css.css" type="text/css">
+    <link rel="stylesheet" href="css/orientation_landscape.css" type="text/css">
+    <link rel="stylesheet" href="css/beautify_detailed_view.css" type="text/css">
     <meta name="Description" content="Restaurant Reviews Application.">
     <link rel="manifest" href="manifest.json">
     <title>Restaurant Info</title>
@@ -52,6 +52,23 @@
     </section>
     <!-- end restaurant -->
     <!-- Beginning reviews -->
+
+    <form id="review-form">
+        <label for="review-form">Add new review</label>
+        <input type="text" id="reviewer-name" name="Name" placeholder="Your name"><br>
+        <input type="text" id="id-restaurant" name="Restaurants ID" placeholder="Id restaurant"><br>
+        <p>Rating:</p>
+        <select id="rating-score" name="Rating">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select><br>
+        <textarea id="text-review" name="Text review" placeholder="Type review to here"></textarea><br>
+        <input type="submit" id="submit-review" onclick="addReview()" value="Submit review">
+    </form>
+
     <section id="reviews-container">
         <ul aria-label="restaurants reviews" id="reviews-list"></ul>
     </section>

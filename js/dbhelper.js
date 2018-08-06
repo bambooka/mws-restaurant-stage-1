@@ -1,6 +1,7 @@
 const dbName = 'restaurantDB';
-const currentVersion = 1;
+const currentVersion = 2;
 const restaurantStore = 'restaurantStore';
+const reviewStore = 'reviewStore';
 
 /*
  * Open database
@@ -12,9 +13,11 @@ const dbPromise = idb.open(dbName, currentVersion, upgradeDB => {
     // noinspection FallThroughInSwitchStatementJS
     switch (upgradeDB.oldVersion) {
         case 0:
-            upgradeDB.createObjectStore('restaurantStore', {keyPath: 'id'});
+            upgradeDB.createObjectStore(restaurantStore, {keyPath: 'id'});
         case 1:
-        // TODO: upgrade from v.1 to v.2 if needed;
+            const reviewsStore = upgradeDB.createObjectStore(reviewStore, {keyPath: 'id'});
+
+            reviewsStore.createIndex('restaurant', 'restaurant_id');
     }
 });
 
@@ -241,7 +244,7 @@ class DBHelper {
         fetch(`${this.DATABASE_URL}/${restaurantId}/?is_favorite=${isFavorite}`, {method: 'PUT'}).then(() => {
 
             dbPromise.then(db => {
-                const tx = db.transaction(restaurantStore,'readwrite');
+                const tx = db.transaction(restaurantStore, 'readwrite');
                 const restoStore = tx.objectStore(restaurantStore);
                 restoStore.get(restaurantId).then(restaurant => {
                     restaurant.is_favorite = isFavorite;
@@ -251,4 +254,195 @@ class DBHelper {
         })
 
     }
+
+    // static fetchReview(id) {
+    //     return fetch(`${this.DATABASE_URL}/reviews/?restaurant_id=${id}`)
+    //         .then(response => response.json()).then(reviews => {
+    //             dbPromise.then(db => {
+    //                 if (!db) return;
+    //
+    //                 let tx = db.transaction('reviews', 'readwrite');
+    //                 const storeReviews = tx.objectStore('reviews');
+    //                 if (Array.isArray(reviews)) {
+    //                     reviews.forEach(function (review) {
+    //                         storeReviews.put(review);
+    //                     });
+    //                 } else {
+    //                     storeReviews.put(reviews);
+    //                 }
+    //             });
+    //             console.log('restaurant reviews are ', reviews);
+    //             return Promise.resolve(reviews);
+    //         }).catch(error => {
+    //             return DBHelper.getStoredObjectById('reviews', 'restaurant', 'id').then(storedReviews => {
+    //                 console.log('looking for offline stored reviews');
+    //                 return Promise.resolve(storedReviews);
+    //             })
+    //         });
+    //
+    //
+    // }
+
+    // static getStoredObjectById(table, idx, id) {
+    //     return dbPromise.then(db => {
+    //         if(!db) return;
+    //
+    //         const store = db.transaction(table).objectStore(table);
+    //         const indexId = store.inde(idx);
+    //         return indexId.getAll(id);
+    //     });
+    // }
+
+    // static addReview(review) {
+    //     let offline_obj = {
+    //         name: 'addReview',
+    //         data: review,
+    //         object_type: 'review'
+    //     };
+    //
+    //     if(!navigator.online && (offline_obj.name === 'addReview')){
+    //         DbHelper.sendDataWhenOnline(online_obj);
+    //         return;
+    //     }
+    //
+    //     let reviewSend = {
+    //         "name": review.name,
+    //         "rating": parseInt(review.rating),
+    //         "comments": review.comments,
+    //         "restaurant_id": parseInt(review.restaurant_id)
+    //     };
+    //
+    //     console.log('Sending review: ', reviewSend);
+    //
+    //     var fetch_options = {
+    //         method: 'POST',
+    //         body: JSON.stringify(reviewSend),
+    //         headers: new Headers({
+    //             'content_type': "application/json"
+    //         })
+    //     };
+    //
+    //     fetch(this.DATABASE_URL, fetch_options).then(response => {
+    //         const contentType = response.headers.get('content_type');
+    //         if(contentType && contentType.indexOf('application/json') !== -1){
+    //             return response.json();
+    //         } else {
+    //             return 'API call successful'
+    //         }
+    //     }).catch(error => console.log('error: ', error));
+    // }
+    //
+    // static sendDataWhenOnline (offline_obj) {
+    //     console.log('offline DBJ', offline_obj);
+    //
+    //     localStorage.setItem('data', JSON.stringify(offline_obj.data));
+    //     console.log(`localstorage ${offline_obj.object_type}stored`);
+    //
+    //     window.addEventListener('online', (event) => {
+    //         console.log('browser: online again!');
+    //         let data = JSON.parse(localStorage.getItem('data'));
+    //         console.log('updating and cleaning ui');
+    //
+    //         [...document.querySelectorAll(".reviews_offline")]
+    //             .forEach((el => {
+    //                 el.classList.remove("reviews_offline")
+    //                 el.querySelector(".offline_label").remove();
+    //             }));
+    //
+    //         if(data !== null) {
+    //             console.log(data);
+    //             if(offline_obj.name === "addReview"){
+    //                 DBHelper.addReview(offline_obj.data);
+    //             }
+    //
+    //             console.log('localstorage: data send to api');
+    //
+    //             localStorage.removeItem('data');
+    //             console.log(`localstorage ${offline_obj.object_type}removed`);
+    //         }
+    //     })
+    // }
+
+
+    /**
+     * Fetch reviews
+     */
+    static fetchReviews(callback) {
+        // First try to fetch reviews from the database
+        dbPromise.then(db => {
+            db.transaction(reviewStore).objectStore(reviewStore)
+                .getAll().then(reviews => {
+
+                if (reviews.length > 0) {
+                    callback(null, reviews);
+                    return;
+                }
+
+                // In case of an empty DB, fetch reviews from the network
+                console.log('db is empty');
+                DBHelper.fetchReviewsFromNetwork((error, reviews) => {
+                    if (reviews != null) {
+                        DBHelper.storeReviewsInDatabase(reviews)
+                    }
+                    callback(error, reviews);
+                });
+            });
+        }).catch(reason => {
+            callback(`db failed. ${reason}`, null);
+        });
+    }
+
+
+    /**
+     * Fetch reviews from the network
+     */
+    static fetchReviewsFromNetwork(callback) {
+        let fetchReviewURL = 'http://localhost:1337/reviews';
+        fetch(fetchReviewURL, {method: 'GET'}).then(response => {
+            response.json().then(reviews => {
+                callback(null, reviews);
+            });
+        }).catch(error => {
+            callback(`network request failed. returned ${error}`, null);
+        });
+    }
+
+    /**
+     * Store reviews in the database
+     */
+    static storeReviewsInDatabase(reviews) {
+        console.log('store reviews in the db');
+        dbPromise.then(db => {
+            const tx = db.transaction(reviewStore, 'readwrite');
+            reviews.forEach(review => {
+                tx.objectStore(reviewStore).put(review);
+            });
+        });
+    }
+
+    /**
+     * Filter reviews by restaurant id
+     */
+    static filterReviewsByRestaurantId(id, callback) {
+        return DBHelper.fetchReviews((error, reviews) => {
+
+            if (error) {
+                callback(error, null);
+            } else {
+                const filter_reviews = reviews.filter(r => r.restaurant_id === id);
+                if (filter_reviews) { // Got the reviews
+                    callback(null, filter_reviews);
+                } else { // Reviews does not exist in the database
+                    callback('Reviews does not exist', null);
+                }
+            }
+
+        });
+
+    }
+
+
 }
+
+
+
