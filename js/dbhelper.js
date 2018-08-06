@@ -367,7 +367,7 @@ class DBHelper {
     /**
      * Fetch reviews
      */
-    static fetchReviews(callback, id) {
+    static fetchReviews(callback) {
         // First try to fetch reviews from the database
         dbPromise.then(db => {
             db.transaction(reviewStore).objectStore(reviewStore)
@@ -424,8 +424,8 @@ class DBHelper {
      * Filter reviews by restaurant name
      */
 
-    static filterReviewsByRestaurantId(id){
-        DBHelper.fetchReviews(id).then(reviews =>{
+    static filterReviewsByRestaurantId2(id) {
+        DBHelper.fetchReviews(id).then(reviews => {
             dbPromise.then(db => {
                 const tx = db.transaction(reviewsStore);
                 const reviewStore = tx.objectStore(reviewsStore);
@@ -440,12 +440,33 @@ class DBHelper {
         })
     }
 
-    static fetchReviewsAboutOneRestaurant(id){
+    static filterReviewsByRestaurantId(id) {
+        return DBHelper.fetchReviews((error, reviews) => {
+
+            dbPromise.then(db => {
+                const tx = db.transaction(reviewStore);
+                const reviewsStore = tx.objectStore(reviewStore);
+                const restaurantIndex = reviewsStore.index('restaurant');
+
+                return restaurantIndex.getAll(id);
+            }).then(reviews => {
+
+                    const filter_review = reviews.filter(r => r.restaurant_id === id);
+                    console.log(filter_review);
+                return filter_review;
+            });
+
+            callback(null, reviews);
+        })
+    }
+
+
+    static fetchReviewsAboutOneRestaurant(id) {
         let fetchReviewsAboutRestURL = `http://localhost:1337/reviews/?restaurant_id=${id}`;
 
         fetch(fetchReviewsAboutRestURL).then(response => response.json()).then(reviews => {
             dbPromise.then(db => {
-                if(!db) return;
+                if (!db) return;
                 let tx = db.transaction(reviewStore, 'readwrite');
                 const store = tx.objectStore(reviewStore);
 

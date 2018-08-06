@@ -96,8 +96,11 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
         fillRestaurantHoursHTML();
     }
     // fill reviews
-    DBHelper.filterReviewsByRestaurantId(restaurant.id)
-        .then(reviews => fillReviewsHTML(reviews))
+    DBHelper.filterReviewsByRestaurantId(restaurant.id).then(reviews => {
+        console.log(reviews);
+        fillReviewsHTML(reviews);
+    });
+
 };
 
 /**
