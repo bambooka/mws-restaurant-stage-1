@@ -207,23 +207,23 @@ getParameterByName = (name, url) => {
 addReview = () => {
     event.preventDefault();
     let restaurantId = getParameterByName('id');
-    let name = document.getElementById('reviewer_name').value;
+    let name = document.getElementById('reviewer-name').value;
     let rating;
     let comments = document.getElementById('text-review').value;
-    rating = document.querySelector('#rating_score option:checked').value;
+    rating = document.querySelector('#rating_score').value;
     const review = [name, rating, comments, restaurantId];
 
 
-    const frontEndReview = {
+    const doneDataForReview = {
         restaurant_id: parseInt(review[3]),
         rating: parseInt(review[1]),
-        name: reviw[0],
+        name: review[0],
         comments: review[2].substring(0, 300),
         createdAt: new Date()
     };
 
-    DBHelper.addReview(frontEndReview);
-    addReviewHTML(frontEndReview);
+    DBHelper.prepareReview(doneDataForReview);
+    addReviewHTML(doneDataForReview);
     document.getElementById('review-form').reset();
 
 };

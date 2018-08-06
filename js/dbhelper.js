@@ -364,6 +364,47 @@ class DBHelper {
     // }
 
 
+    static prepareReview(review) {
+
+        let offline_object = {
+            name: 'addReview',
+            data: review,
+            object_type: 'review'
+        };
+
+        // Check if online
+        if (!navigator.onLine && (offline_object.name === 'addReview')) {
+            DBHelper.sendDataWhenOnline(offline_object);
+            return;
+        }
+
+        let reviewSend = {
+            'name': review.name,
+            'rating': parseInt(review.rating),
+            'comments': review.comments,
+            'restaurant_id': parseInt(review.restaurant_id)
+        };
+
+        console.log('Sending review: ', reviewSend);
+
+        var fetch_data = {
+            method: 'POST',
+            body: JSON.stringify(reviewSend),
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        };
+
+        fetch(`http://localhost:1337/reviews`, fetch_data).then((response) => {
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.indexOf('application/json') !== -1) {
+                return response.json();
+            } else { return 'API call successfull'}})
+            .then((data) => {console.log(`Fetch successful!`)})
+            .catch(error => console.log('error:', error));
+
+    }
+
     /**
      * Fetch reviews
      */
