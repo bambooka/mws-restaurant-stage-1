@@ -208,9 +208,9 @@ addReview = () => {
     event.preventDefault();
     let restaurantId = getParameterByName('id');
     let name = document.getElementById('reviewer-name').value;
-    let rating;
+    let rating = document.querySelector('#rating_score').value;
     let comments = document.getElementById('text-review').value;
-    rating = document.querySelector('#rating_score').value;
+
     const review = [name, rating, comments, restaurantId];
 
 
@@ -222,12 +222,19 @@ addReview = () => {
         createdAt: new Date()
     };
 
-    DBHelper.prepareReview(doneDataForReview);
+    DBHelper.storeNewReviewInDatabase(doneDataForReview);
+
+    DBHelper.pushReview(doneDataForReview);
     addReviewHTML(doneDataForReview);
+
+    //clean the form after submit review
     document.getElementById('review-form').reset();
+
+
 
 };
 
+// put new review in top
 addReviewHTML = (review) => {
     if (document.getElementById('no-review')) {
         document.getElementById('no-review').remove();
@@ -235,7 +242,7 @@ addReviewHTML = (review) => {
     const container = document.getElementById('reviews-container');
     const ul = document.getElementById('reviews-list');
 
-    //insert the new review on top
+
     ul.insertBefore(createReviewHTML(review), ul.firstChild);
     container.appendChild(ul);
 };

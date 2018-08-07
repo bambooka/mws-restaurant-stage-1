@@ -255,155 +255,6 @@ class DBHelper {
 
     }
 
-    // static fetchReview(id) {
-    //     return fetch(`${this.DATABASE_URL}/reviews/?restaurant_id=${id}`)
-    //         .then(response => response.json()).then(reviews => {
-    //             dbPromise.then(db => {
-    //                 if (!db) return;
-    //
-    //                 let tx = db.transaction('reviews', 'readwrite');
-    //                 const storeReviews = tx.objectStore('reviews');
-    //                 if (Array.isArray(reviews)) {
-    //                     reviews.forEach(function (review) {
-    //                         storeReviews.put(review);
-    //                     });
-    //                 } else {
-    //                     storeReviews.put(reviews);
-    //                 }
-    //             });
-    //             console.log('restaurant reviews are ', reviews);
-    //             return Promise.resolve(reviews);
-    //         }).catch(error => {
-    //             return DBHelper.getStoredObjectById('reviews', 'restaurant', 'id').then(storedReviews => {
-    //                 console.log('looking for offline stored reviews');
-    //                 return Promise.resolve(storedReviews);
-    //             })
-    //         });
-    //
-    //
-    // }
-
-    // static getStoredObjectById(table, idx, id) {
-    //     return dbPromise.then(db => {
-    //         if(!db) return;
-    //
-    //         const store = db.transaction(table).objectStore(table);
-    //         const indexId = store.inde(idx);
-    //         return indexId.getAll(id);
-    //     });
-    // }
-
-    // static addReview(review) {
-    //     let offline_obj = {
-    //         name: 'addReview',
-    //         data: review,
-    //         object_type: 'review'
-    //     };
-    //
-    //     if(!navigator.online && (offline_obj.name === 'addReview')){
-    //         DbHelper.sendDataWhenOnline(online_obj);
-    //         return;
-    //     }
-    //
-    //     let reviewSend = {
-    //         "name": review.name,
-    //         "rating": parseInt(review.rating),
-    //         "comments": review.comments,
-    //         "restaurant_id": parseInt(review.restaurant_id)
-    //     };
-    //
-    //     console.log('Sending review: ', reviewSend);
-    //
-    //     var fetch_options = {
-    //         method: 'POST',
-    //         body: JSON.stringify(reviewSend),
-    //         headers: new Headers({
-    //             'content_type': "application/json"
-    //         })
-    //     };
-    //
-    //     fetch(this.DATABASE_URL, fetch_options).then(response => {
-    //         const contentType = response.headers.get('content_type');
-    //         if(contentType && contentType.indexOf('application/json') !== -1){
-    //             return response.json();
-    //         } else {
-    //             return 'API call successful'
-    //         }
-    //     }).catch(error => console.log('error: ', error));
-    // }
-    //
-    // static sendDataWhenOnline (offline_obj) {
-    //     console.log('offline DBJ', offline_obj);
-    //
-    //     localStorage.setItem('data', JSON.stringify(offline_obj.data));
-    //     console.log(`localstorage ${offline_obj.object_type}stored`);
-    //
-    //     window.addEventListener('online', (event) => {
-    //         console.log('browser: online again!');
-    //         let data = JSON.parse(localStorage.getItem('data'));
-    //         console.log('updating and cleaning ui');
-    //
-    //         [...document.querySelectorAll(".reviews_offline")]
-    //             .forEach((el => {
-    //                 el.classList.remove("reviews_offline")
-    //                 el.querySelector(".offline_label").remove();
-    //             }));
-    //
-    //         if(data !== null) {
-    //             console.log(data);
-    //             if(offline_obj.name === "addReview"){
-    //                 DBHelper.addReview(offline_obj.data);
-    //             }
-    //
-    //             console.log('localstorage: data send to api');
-    //
-    //             localStorage.removeItem('data');
-    //             console.log(`localstorage ${offline_obj.object_type}removed`);
-    //         }
-    //     })
-    // }
-
-
-    static prepareReview(review) {
-
-        let offline_object = {
-            name: 'addReview',
-            data: review,
-            object_type: 'review'
-        };
-
-        // Check if online
-        if (!navigator.onLine && (offline_object.name === 'addReview')) {
-            DBHelper.sendDataWhenOnline(offline_object);
-            return;
-        }
-
-        let reviewSend = {
-            'name': review.name,
-            'rating': parseInt(review.rating),
-            'comments': review.comments,
-            'restaurant_id': parseInt(review.restaurant_id)
-        };
-
-        console.log('Sending review: ', reviewSend);
-
-        var fetch_data = {
-            method: 'POST',
-            body: JSON.stringify(reviewSend),
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            })
-        };
-
-        fetch(`http://localhost:1337/reviews`, fetch_data).then((response) => {
-            const contentType = response.headers.get('content-type');
-            if (contentType && contentType.indexOf('application/json') !== -1) {
-                return response.json();
-            } else { return 'API call successfull'}})
-            .then((data) => {console.log(`Fetch successful!`)})
-            .catch(error => console.log('error:', error));
-
-    }
 
     /**
      * Fetch reviews
@@ -449,7 +300,7 @@ class DBHelper {
     }
 
     /**
-     * Store reviews in the database
+     * Store all reviews from server in the database
      */
     static storeReviewsInDatabase(reviews) {
         console.log('store reviews in the db');
@@ -482,6 +333,106 @@ class DBHelper {
 
     }
 
+
+
+    /**
+     * Send waiting data when online.
+     */
+    static sendDataWhenOnline(offline_object) {
+        console.log('Offline OBJ', offline_object);
+
+        localStorage.setItem('data', JSON.stringify(offline_object.data));
+
+        console.log(`Local Storage: ${offline_object.object_type} stored`);
+
+        window.addEventListener('online', (event) => {
+
+            console.log('Browser: Online again!');
+            let data = JSON.parse(localStorage.getItem('data'));
+            console.log('updating and cleaning ui');
+
+            [...document.querySelectorAll(".reviews_offline")]
+                .forEach(el => {
+                    el.classList.remove("reviews_offline");
+                    el.querySelector(".offline_label").remove()
+                });
+            if (data !== null) {
+                console.log(data);
+                if (offline_object.name === 'addReview') {
+                    DBHelper.addReview(offline_object.data);
+                }
+
+                console.log('LocalState: data sent to api');
+
+                localStorage.removeItem('data');
+                console.log(`Local Storage: ${offline_object.object_type} removed`);
+            }
+        });
+    }
+
+    /**
+     * Store New Review in the database.
+     */
+    static storeNewReviewInDatabase(review){
+        fetch(`http:localhost:1337/reviews`, {method: 'PUT'}).then(() => {
+
+            dbPromise.then(db => {
+                const tx = db.transaction(reviewStore, 'readwrite');
+                const reviewPutStore = tx.objectStore(reviewStore);
+                    reviewPutStore.put(review);
+
+            })
+        })
+    }
+
+
+    /**
+     * push review to server
+     */
+    static pushReview(review) {
+
+        let offline_object = {
+            name: 'addReview',
+            data: review,
+            object_type: 'review'
+        };
+
+        // Check if online
+        if (!navigator.onLine && (offline_object.name === 'addReview')) {
+            DBHelper.sendDataWhenOnline(offline_object);
+            return;
+        }
+
+
+        let reviewSend = {
+            'name': review.name,
+            'rating': parseInt(review.rating),
+            'comments': review.comments,
+            'restaurant_id': parseInt(review.restaurant_id)
+        };
+
+        console.log('Sending review: ', reviewSend);
+
+
+        var fetch_data = {
+            method: 'POST',
+            body: JSON.stringify(reviewSend),
+            headers: new Headers({
+                'Content-Type': 'application/json'
+            })
+        };
+
+
+
+        fetch(`http://localhost:1337/reviews`, fetch_data).then((response) => {
+            const contentType = response.headers.get('content-type');
+            if (contentType && contentType.indexOf('application/json') !== -1) {
+                return response.json();
+            } else { return 'API call successfull'}})
+            .then((data) => {console.log(`Fetch successful!`)})
+            .catch(error => console.log('error:', error));
+
+    }
 
 }
 
