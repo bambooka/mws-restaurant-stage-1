@@ -15,7 +15,7 @@ const dbPromise = idb.open(dbName, currentVersion, upgradeDB => {
         case 0:
             upgradeDB.createObjectStore(restaurantStore, {keyPath: 'id'});
         case 1:
-            const reviewsStore = upgradeDB.createObjectStore(reviewStore, {keyPath: 'id'});
+            const reviewsStore = upgradeDB.createObjectStore(reviewStore, {keyPath: 'id', autoIncrement: true});
 
             reviewsStore.createIndex('restaurant', 'restaurant_id');
     }
@@ -255,7 +255,6 @@ class DBHelper {
 
     }
 
-
     /**
      * Fetch reviews
      */
@@ -283,7 +282,6 @@ class DBHelper {
             callback(`db failed. ${reason}`, null);
         });
     }
-
 
     /**
      * Fetch reviews from the network
@@ -333,8 +331,6 @@ class DBHelper {
 
     }
 
-
-
     /**
      * Send waiting data when online.
      */
@@ -373,18 +369,13 @@ class DBHelper {
     /**
      * Store New Review in the database.
      */
-    static storeNewReviewInDatabase(review){
-        fetch(`http:localhost:1337/reviews`, {method: 'PUT'}).then(() => {
+    static storeNewReviewInDatabase(review) {
 
-            dbPromise.then(db => {
-                const tx = db.transaction(reviewStore, 'readwrite');
-                const reviewPutStore = tx.objectStore(reviewStore);
-                    reviewPutStore.put(review);
-
-            })
+        dbPromise.then(db => {
+            const tx = db.transaction(reviewStore, 'readwrite');
+            tx.objectStore(reviewStore).put(review);
         })
     }
-
 
     /**
      * push review to server
@@ -405,14 +396,13 @@ class DBHelper {
 
 
         let reviewSend = {
+            'restaurant_id': parseInt(review.restaurant_id),
             'name': review.name,
             'rating': parseInt(review.rating),
-            'comments': review.comments,
-            'restaurant_id': parseInt(review.restaurant_id)
+            'comments': review.comments
         };
 
         console.log('Sending review: ', reviewSend);
-
 
         var fetch_data = {
             method: 'POST',
@@ -422,17 +412,28 @@ class DBHelper {
             })
         };
 
+        console.log('Sending review: ', fetch_data.body);
 
+        // отправка нового отзыва на сервер
 
         fetch(`http://localhost:1337/reviews`, fetch_data).then((response) => {
             const contentType = response.headers.get('content-type');
+
             if (contentType && contentType.indexOf('application/json') !== -1) {
                 return response.json();
-            } else { return 'API call successfull'}})
-            .then((data) => {console.log(`Fetch successful!`)})
+            } else {
+                return 'API call successfull'
+            }
+        })
+            .then((data) => {
+
+                console.log(`${data} Fetch successful!`)
+            })
             .catch(error => console.log('error:', error));
 
+
     }
+
 
 }
 

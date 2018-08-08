@@ -222,6 +222,8 @@ addReview = () => {
         createdAt: new Date()
     };
 
+    console.log(doneDataForReview);
+
     DBHelper.storeNewReviewInDatabase(doneDataForReview);
 
     DBHelper.pushReview(doneDataForReview);
