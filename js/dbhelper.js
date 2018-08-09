@@ -258,20 +258,34 @@ class DBHelper {
     /**
      * Fetch reviews
      */
-    static fetchReviews(callback) {
+    static fetchReviews(id, callback) {
         // First try to fetch reviews from the database
         dbPromise.then(db => {
             db.transaction(reviewStore).objectStore(reviewStore)
                 .getAll().then(reviews => {
+                
+                console.log(reviews);
+                
+                if (reviews) {
+                    const filter_reviews = reviews.filter(r => r.restaurant_id === id);
+                if (filter_reviews) { // Got the reviews
+                    callback(null, filter_reviews);
+                } else { // Reviews does not exist in the database
+                    callback('Reviews does not exist', null);
+                } 
+                
+            } else {
+                callback(error, null);
+            }
 
-                if (reviews.length > 0) {
-                    callback(null, reviews);
-                    return;
-                }
+//                if (reviews.length > 0) {
+//                    callback(null, reviews);
+//                    return;
+//                }
 
                 // In case of an empty DB, fetch reviews from the network
                 console.log('db is empty');
-                DBHelper.fetchReviewsFromNetwork((error, reviews) => {
+                DBHelper.fetchReviewsFromNetwork(id, (error, reviews) => {
                     if (reviews != null) {
                         DBHelper.storeReviewsInDatabase(reviews)
                     }
@@ -286,8 +300,8 @@ class DBHelper {
     /**
      * Fetch reviews from the network
      */
-    static fetchReviewsFromNetwork(callback) {
-        let fetchReviewURL = 'http://localhost:1337/reviews';
+    static fetchReviewsFromNetwork(id, callback) {
+        let fetchReviewURL = `http://localhost:1337/reviews/?restaurant_id=${id}`;
         fetch(fetchReviewURL, {method: 'GET'}).then(response => {
             response.json().then(reviews => {
                 callback(null, reviews);
