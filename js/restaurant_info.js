@@ -153,8 +153,8 @@ createReviewHTML = (review) => {
 
     if(!navigator.onLine) {
         const connection_status = document.createElement('p');
-        connection_status.classList('offline_label');
-        connection_status.innerHTML('offline');
+        connection_status.classList.add('offline_label');
+        connection_status.innerHTML = 'offline';
         li.classList.add('reviews_offline');
         li.appendChild(connection_status);
     }
@@ -224,7 +224,15 @@ addReview = () => {
 
     console.log(doneDataForReview);
 
-    DBHelper.storeNewReviewInDatabase(doneDataForReview);
+    if (navigator.onLine) {
+        DBHelper.storeNewReviewInDatabase(doneDataForReview);
+    } else {
+        //store review in regular the store
+        DBHelper.storeNewReviewInDatabase(doneDataForReview);
+        // store review in store for delay upload to server
+        DBHelper.storeNewDelayReviewInDatabase(doneDataForReview);
+
+    }
 
     DBHelper.pushReview(doneDataForReview);
     addReviewHTML(doneDataForReview);

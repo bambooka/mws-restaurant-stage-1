@@ -1,7 +1,8 @@
 const dbName = 'restaurantDB';
-const currentVersion = 2;
+const currentVersion = 3;
 const restaurantStore = 'restaurantStore';
 const reviewStore = 'reviewStore';
+const delayStore = 'delayStore';
 
 /*
  * Open database
@@ -18,6 +19,8 @@ const dbPromise = idb.open(dbName, currentVersion, upgradeDB => {
             const reviewsStore = upgradeDB.createObjectStore(reviewStore, {keyPath: 'id', autoIncrement: true});
 
             reviewsStore.createIndex('restaurant', 'restaurant_id');
+        case 2:
+            upgradeDB.createObjectStore(delayStore, {keyPath: 'id', autoIncrement: true});
     }
 });
 
@@ -278,11 +281,6 @@ class DBHelper {
                 callback(error, null);
             }
 
-//                if (reviews.length > 0) {
-//                    callback(null, reviews);
-//                    return;
-//                }
-
                 // In case of an empty DB, fetch reviews from the network
                 console.log('db is empty');
                 DBHelper.fetchReviewsFromNetwork(id, (error, reviews) => {
@@ -348,34 +346,44 @@ class DBHelper {
     /**
      * Send waiting data when online.
      */
-    static sendDataWhenOnline(offline_object) {
-        console.log('Offline OBJ', offline_object);
+    static sendDataWhenOnline(offline_review) {
+        console.log('Offline OBJ', offline_review);
 
-        localStorage.setItem('data', JSON.stringify(offline_object.data));
+        this.storeNewDelayReviewInDatabase(offline_review);
 
-        console.log(`Local Storage: ${offline_object.object_type} stored`);
+        console.log(`indexed db: ${offline_review.object_type} stored`);
 
         window.addEventListener('online', (event) => {
 
             console.log('Browser: Online again!');
-            let data = JSON.parse(localStorage.getItem('data'));
-            console.log('updating and cleaning ui');
+
+            let delayReviews = dbPromise.then(db => {
+                db.transaction(delayStore,'readwrite').objectStore(delayStore).getAll().then(reviews => {
+                    return reviews;
+                });
+
+            });
 
             [...document.querySelectorAll(".reviews_offline")]
                 .forEach(el => {
                     el.classList.remove("reviews_offline");
                     el.querySelector(".offline_label").remove()
                 });
-            if (data !== null) {
-                console.log(data);
-                if (offline_object.name === 'addReview') {
-                    DBHelper.addReview(offline_object.data);
+
+            if (delayReviews !== null) {
+
+                if (offline_review.name === 'addReview') {
+                    DBHelper.pushReview(offline_review.data);
                 }
 
                 console.log('LocalState: data sent to api');
 
-                localStorage.removeItem('data');
-                console.log(`Local Storage: ${offline_object.object_type} removed`);
+                dbPromise.then(db => {
+                    const tx = db.transaction(delayStore,'readwrite');
+                    tx.objectStore(delayStore).clear();
+                });
+
+                console.log(`indexed db: ${offline_review.object_type} removed`);
             }
         });
     }
@@ -391,20 +399,28 @@ class DBHelper {
         })
     }
 
+    static storeNewDelayReviewInDatabase(review) {
+
+        dbPromise.then(db => {
+            const tx = db.transaction(delayStore, 'readwrite');
+            tx.objectStore(delayStore).put(review);
+        })
+    }
+
     /**
      * push review to server
      */
     static pushReview(review) {
 
-        let offline_object = {
+        let offline_review = {
             name: 'addReview',
             data: review,
             object_type: 'review'
         };
 
         // Check if online
-        if (!navigator.onLine && (offline_object.name === 'addReview')) {
-            DBHelper.sendDataWhenOnline(offline_object);
+        if (!navigator.onLine && (offline_review.name === 'addReview')) {
+            DBHelper.sendDataWhenOnline(offline_review);
             return;
         }
 
