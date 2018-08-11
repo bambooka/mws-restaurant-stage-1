@@ -382,3 +382,12 @@ nav h1 a {
     text-transform: uppercase;
     padding: 3px;
 }
+
+.reviews_offline {
+    border: 2px solid red;
+}
+
+.reviews_offline:before {
+    content: 'you are offline';
+    color: red;
+}
