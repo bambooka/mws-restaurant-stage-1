@@ -272,7 +272,7 @@ class DBHelper {
                 
                 console.log(reviews);
                 
-                if (reviews) {
+                if (reviews.length > 0) {
                     const filter_reviews = reviews.filter(r => r.restaurant_id === id);
                 if (filter_reviews) { // Got the reviews
                     callback(null, filter_reviews);
@@ -281,9 +281,6 @@ class DBHelper {
                 } 
                 
             } else {
-                callback(error, null);
-            }
-
                 // In case of an empty DB, fetch reviews from the network
                 console.log('db is empty');
                 DBHelper.fetchReviewsFromNetwork(id, (error, reviews) => {
@@ -292,6 +289,7 @@ class DBHelper {
                     }
                     callback(error, reviews);
                 });
+                }
             });
         }).catch(reason => {
             callback(`db failed. ${reason}`, null);
