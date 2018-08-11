@@ -75,7 +75,7 @@ class DBHelper {
         fetch(fetchURL, {method: 'GET'}).then(response => {
             response.json().then(restaurants => {
                 restaurants.forEach(r => {
-                     r.is_favorite = r.is_favorite === 'true';
+                    r.is_favorite = r.is_favorite === 'true';
                 });
                 callback(null, restaurants);
             });
@@ -269,26 +269,26 @@ class DBHelper {
         dbPromise.then(db => {
             db.transaction(reviewStore).objectStore(reviewStore)
                 .getAll().then(reviews => {
-                
+
                 console.log(reviews);
-                
+
                 if (reviews.length > 0) {
                     const filter_reviews = reviews.filter(r => r.restaurant_id === id);
-                if (filter_reviews) { // Got the reviews
-                    callback(null, filter_reviews);
-                } else { // Reviews does not exist in the database
-                    callback('Reviews does not exist', null);
-                } 
-                
-            } else {
-                // In case of an empty DB, fetch reviews from the network
-                console.log('db is empty');
-                DBHelper.fetchReviewsFromNetwork(id, (error, reviews) => {
-                    if (reviews != null) {
-                        DBHelper.storeReviewsInDatabase(reviews)
+                    if (filter_reviews) { // Got the reviews
+                        callback(null, filter_reviews);
+                    } else { // Reviews does not exist in the database
+                        callback('Reviews does not exist', null);
                     }
-                    callback(error, reviews);
-                });
+
+                } else {
+                    // In case of an empty DB, fetch reviews from the network
+                    console.log('db is empty');
+                    DBHelper.fetchReviewsFromNetwork(id, (error, reviews) => {
+                        if (reviews != null) {
+                            DBHelper.storeReviewsInDatabase(reviews)
+                        }
+                        callback(error, reviews);
+                    });
                 }
             });
         }).catch(reason => {
@@ -359,7 +359,7 @@ class DBHelper {
             console.log('Browser: Online again!');
 
             let delayReviews = dbPromise.then(db => {
-                db.transaction(delayStore,'readwrite').objectStore(delayStore).getAll().then(reviews => {
+                db.transaction(delayStore, 'readwrite').objectStore(delayStore).getAll().then(reviews => {
                     return reviews;
                 });
 
@@ -380,7 +380,7 @@ class DBHelper {
                 console.log('LocalState: data sent to api');
 
                 dbPromise.then(db => {
-                    const tx = db.transaction(delayStore,'readwrite');
+                    const tx = db.transaction(delayStore, 'readwrite');
                     tx.objectStore(delayStore).clear();
                 });
 
