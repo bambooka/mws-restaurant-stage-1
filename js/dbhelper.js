@@ -74,6 +74,9 @@ class DBHelper {
         let fetchURL = DBHelper.DATABASE_URL;
         fetch(fetchURL, {method: 'GET'}).then(response => {
             response.json().then(restaurants => {
+                restaurants.forEach(r => {
+                     r.is_favorite = r.is_favorite === 'true';
+                });
                 callback(null, restaurants);
             });
         }).catch(error => {
