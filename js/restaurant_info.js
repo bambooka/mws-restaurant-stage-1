@@ -96,7 +96,7 @@ fillRestaurantHTML = (restaurant = self.restaurant) => {
         fillRestaurantHoursHTML();
     }
     // fill reviews
-    DBHelper.filterReviewsByRestaurantId(restaurant.id, (error, reviews) => {
+    DBHelper.fetchReviews(restaurant.id, (error, reviews) => {
         console.log(reviews);
         fillReviewsHTML(reviews);
     });
@@ -152,11 +152,7 @@ createReviewHTML = (review) => {
     const li = document.createElement('li');
 
     if(!navigator.onLine) {
-        const connection_status = document.createElement('p');
-        connection_status.classList('offline_label');
-        connection_status.innerHTML('offline');
-        li.classList.add('reviews_offline');
-        li.appendChild(connection_status);
+        li.classList.add('reviews_pending');
     }
 
     const name = document.createElement('p');
@@ -164,7 +160,7 @@ createReviewHTML = (review) => {
     li.appendChild(name);
 
     const date = document.createElement('p');
-    date.innerHTML = review.date;
+    date.innerHTML = new Date(review.createdAt).toLocaleDateString();
     li.appendChild(date);
 
     const rating = document.createElement('p');
@@ -206,28 +202,33 @@ getParameterByName = (name, url) => {
 
 addReview = () => {
     event.preventDefault();
-    let restaurantId = getParameterByName('id');
-    let name = document.getElementById('reviewer_name').value;
-    let rating;
-    let comments = document.getElementById('text-review').value;
-    rating = document.querySelector('#rating_score option:checked').value;
-    const review = [name, rating, comments, restaurantId];
 
-
-    const frontEndReview = {
-        restaurant_id: parseInt(review[3]),
-        rating: parseInt(review[1]),
-        name: reviw[0],
-        comments: review[2].substring(0, 300),
+    const doneDataForReview = {
+        restaurant_id: parseInt(getParameterByName('id')),
+        rating: parseInt(document.querySelector('#rating_score').value),
+        name: document.getElementById('reviewer-name').value,
+        comments: document.getElementById('text-review').value.substring(0, 300),
         createdAt: new Date()
     };
 
-    DBHelper.addReview(frontEndReview);
-    addReviewHTML(frontEndReview);
-    document.getElementById('review-form').reset();
+    if (navigator.onLine) {
+        // store review only in the regular store
+        DBHelper.storeNewReviewInDatabase(doneDataForReview);
+    } else {
+        //store review in the regular store and delay store
+        DBHelper.storeNewReviewInDatabase(doneDataForReview);
+        DBHelper.storeNewDelayReviewInDatabase(doneDataForReview);
+    }
 
+    // push reviews to server and add it on the page
+    DBHelper.pushReview(doneDataForReview);
+    addReviewHTML(doneDataForReview);
+
+    //clean the form after submit review
+    document.getElementById('review-form').reset();
 };
 
+// put new review in top
 addReviewHTML = (review) => {
     if (document.getElementById('no-review')) {
         document.getElementById('no-review').remove();
@@ -235,7 +236,6 @@ addReviewHTML = (review) => {
     const container = document.getElementById('reviews-container');
     const ul = document.getElementById('reviews-list');
 
-    //insert the new review on top
-    ul.insertBefore(createReviewHTML(review), ul.firstChild);
+    ul.appendChild(createReviewHTML(review));
     container.appendChild(ul);
 };
