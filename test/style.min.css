@@ -324,12 +324,88 @@ nav h1 a {
 
 /* Button showMap */
 
-#showMap{
+#showMap {
     width: 100%;
     height: 60px;
     font-size: 170%;
     background-color: #7e4f00;
     color: #fff;
+}
+
+.button_marks_favorite {
+    background-color: white;
+    border: none;
+    font-size: 40px;
+    width: 100%;
+}
+
+.favorite {
+    color: red;
+}
+
+.no_favorite {
+    color: darkgray;
+}
+
+#review-form {
+    width: 300px;
+    height: 300px;
+}
+
+#review-form h3 {
+    font-weight: bold;
+    margin-left: 10px;
+    margin-bottom: 5px;
+    margin-top: 10px;
+    color: #7e4f00;
+}
+
+#review-form input, #review-form textarea {
+    margin: 10px;
+    border: 1px solid #7e4f00;
+    padding: 10px;
+}
+
+#review-form input {
+    width: 100%;
+}
+
+#review-form textarea {
+    width: 100%;
+}
+
+#review-form label {
+    width: 100%;
+    margin-left: 10px;
+}
+
+#review-form select {
+    height: 40px;
+    width: 40%;
+    margin-left: 10px;
+    border: 1px solid #7e4f00;
+}
+
+#reviews-header {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #7e4f00;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 130%;
+}
+
+#submit-review {
+    background-color: #7e4f00;
+    color: white;
+    font-size: 110%;
+    text-transform: uppercase;
+    padding: 3px;
+    width: 50% !important;
+}
+
+.reviews_pending:before {
+    content: 'pending';
+    color: red;
 }
 
 /*Margin-top for main content*/
