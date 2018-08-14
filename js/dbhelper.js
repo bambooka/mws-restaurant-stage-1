@@ -251,10 +251,10 @@ class DBHelper {
 
             dbPromise.then(db => {
                 const tx = db.transaction(restaurantStore, 'readwrite');
-                const restoStore = tx.objectStore(restaurantStore);
-                restoStore.get(restaurantId).then(restaurant => {
+                const restaurantsStore = tx.objectStore(restaurantStore);
+                restaurantsStore.get(restaurantId).then(restaurant => {
                     restaurant.is_favorite = isFavorite;
-                    restoStore.put(restaurant);
+                    restaurantsStore.put(restaurant);
                 })
             })
         })
@@ -280,7 +280,6 @@ class DBHelper {
                     } else { // Reviews does not exist in the database
 
                         // In case of an empty DB, fetch reviews from the network
-                        console.log('db is empty');
                         DBHelper.fetchReviewsFromNetwork(id, (error, reviews) => {
                             if (reviews != null) {
                                 DBHelper.storeReviewsInDatabase(reviews)
@@ -288,10 +287,8 @@ class DBHelper {
                             callback(error, reviews);
                         });
                     }
-                } else { // Reviews does not exist in the database
-// TODO: make method for case when have to go network and store in database
-                    // In case of an empty DB, fetch reviews from the network
-                    console.log('db is empty');
+                } else {
+                    // In case needed reviews doesn't exist in a DB, fetch reviews from the network
                     DBHelper.fetchReviewsFromNetwork(id, (error, reviews) => {
                         if (reviews != null) {
                             DBHelper.storeReviewsInDatabase(reviews)
@@ -335,10 +332,7 @@ class DBHelper {
     /**
      * Send waiting data when online.
      */
-    static sendDataWhenOnline(offline_review) {
-
-        // put review into delay store in the database
-        DBHelper.storeNewDelayReviewInDatabase(offline_review);
+    static sendReviewWhenOnline(pending_review) {
 
         window.addEventListener('online', () => {
 
@@ -349,18 +343,16 @@ class DBHelper {
 
             });
 
-            // remove class for offline reviews
-            [...document.querySelectorAll(".reviews_offline")]
-                .forEach(review_offline => {
-                    review_offline.classList.remove("reviews_offline");
+            // Remove class for offline reviews.
+            [...document.querySelectorAll(".reviews_pending")]
+                .forEach(review_pending => {
+                    review_pending.classList.remove("reviews_pending");
                 });
-
-            document.getElementById('warning_offline').style.display = 'none';
 
             // push to server and clear delay store
             if (delayReviews !== null) {
 
-                DBHelper.pushReview(offline_review.data);
+                DBHelper.pushReview(pending_review);
 
                 dbPromise.then(db => {
                     const tx = db.transaction(delayStore, 'readwrite');
@@ -397,37 +389,32 @@ class DBHelper {
      */
     static pushReview(review) {
 
-        let offline_review = {
-            data: review,
-            object_type: 'review'
-        };
-
         if (!navigator.onLine) {
-            DBHelper.sendDataWhenOnline(offline_review);
+            DBHelper.sendReviewWhenOnline(review);
             return;
         }
 
-        let reviewSend = {
+        let reviewContent = {
             'restaurant_id': parseInt(review.restaurant_id),
             'name': review.name,
             'rating': parseInt(review.rating),
             'comments': review.comments
         };
 
-        let fetch_data = {
+        let fetch_review = {
             method: 'POST',
-            body: JSON.stringify(reviewSend),
+            body: JSON.stringify(reviewContent),
             headers: new Headers({'Content-Type': 'application/json'})
         };
 
-        // request to server for sending review
-        fetch(`http://localhost:1337/reviews`, fetch_data).then((response) => {
+        // request to server for push review
+        fetch(`http://localhost:1337/reviews`, fetch_review).then((response) => {
             const contentType = response.headers.get('content-type');
 
             if (contentType && contentType.indexOf('application/json') !== -1) {
                 return response.json();
             } else {
-                return 'Something went wrong'
+                return 'Something went wrong';
             }
         })
     }
