@@ -152,7 +152,7 @@ createReviewHTML = (review) => {
     const li = document.createElement('li');
 
     if(!navigator.onLine) {
-        li.classList.add('reviews_offline');
+        li.classList.add('reviews_pending');
     }
 
     const name = document.createElement('p');
@@ -218,8 +218,6 @@ addReview = () => {
         //store review in the regular store and delay store
         DBHelper.storeNewReviewInDatabase(doneDataForReview);
         DBHelper.storeNewDelayReviewInDatabase(doneDataForReview);
-
-        document.getElementById('warning_offline').style.display = 'block';
     }
 
     // push reviews to server and add it on the page
