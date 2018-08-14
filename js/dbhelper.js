@@ -35,7 +35,7 @@ class DBHelper {
     static get DATABASE_URL() {
         const port = 1337;
         const domain = 'localhost';
-        return `http://${domain}:${port}/restaurants`;
+        return `http://${domain}:${port}`;
     }
 
     /**
@@ -71,7 +71,7 @@ class DBHelper {
      * Fetch restaurants from the network, if the database is empty
      */
     static fetchRestaurantsFromNetwork(callback) {
-        let fetchURL = DBHelper.DATABASE_URL;
+        let fetchURL = `${DBHelper.DATABASE_URL}/restaurants`;
         fetch(fetchURL, {method: 'GET'}).then(response => {
             response.json().then(restaurants => {
                 restaurants.forEach(r => {
@@ -247,7 +247,7 @@ class DBHelper {
     }
 
     static updateFavoriteStatus(restaurantId, isFavorite) {
-        fetch(`${this.DATABASE_URL}/${restaurantId}/?is_favorite=${isFavorite}`, {method: 'PUT'}).then(() => {
+        fetch(`${DBHelper.DATABASE_URL}/restaurants/${restaurantId}/?is_favorite=${isFavorite}`, {method: 'PUT'}).then(() => {
 
             dbPromise.then(db => {
                 const tx = db.transaction(restaurantStore, 'readwrite');
@@ -306,7 +306,7 @@ class DBHelper {
      * Fetch reviews from the network
      */
     static fetchReviewsFromNetwork(id, callback) {
-        let fetchReviewURL = `http://localhost:1337/reviews/?restaurant_id=${id}`;
+        let fetchReviewURL = `${DBHelper.DATABASE_URL}/reviews/?restaurant_id=${id}`;
         fetch(fetchReviewURL, {method: 'GET'}).then(response => {
             response.json().then(reviews => {
                 callback(null, reviews);
@@ -408,7 +408,7 @@ class DBHelper {
         };
 
         // request to server for push review
-        fetch(`http://localhost:1337/reviews`, fetch_review).then((response) => {
+        fetch(`${DBHelper.DATABASE_URL}/reviews`, fetch_review).then((response) => {
             const contentType = response.headers.get('content-type');
 
             if (contentType && contentType.indexOf('application/json') !== -1) {
