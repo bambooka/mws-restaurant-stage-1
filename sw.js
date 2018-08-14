@@ -1,5 +1,6 @@
 const CACHE = 'cache';
 var toCache = [
+    '/',
     'index.html',
     'restaurant.html?id=1',
     'restaurant.html?id=2',
@@ -11,10 +12,10 @@ var toCache = [
     'restaurant.html?id=8',
     'restaurant.html?id=9',
     'restaurant.html?id=10',
-    './css/beautify_detailed_view.css',
-    './css/orientation_landscape.css',
+    './dist/style.min.css',
     './js/index.js',
     './js/main.js',
+    './js/idb.js',
     './js/restaurant_info.js',
     './js/dbhelper.js',
     './img/placeholder.jpg',
@@ -39,7 +40,7 @@ var toCache = [
     './img/small9.jpg',
     './img/small9.jpg',
     './img/small10.jpg'
-]
+];
 
 // Install and put into cache
 self.addEventListener('install', function (event) {
@@ -69,11 +70,11 @@ self.addEventListener('activate', function (event) {
 });
 
 // Extract from cache
-self.addEventListener('fetch', function (event) {
 
+self.addEventListener('fetch', event => {
     event.respondWith(
-        caches.match(event.request).then(function (response) {
-            return response || fetch(event.request);
+        fetch(event.request).catch(() => {
+            return caches.match(event.request);
         })
     );
 });
