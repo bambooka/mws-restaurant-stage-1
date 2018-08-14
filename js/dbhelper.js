@@ -274,13 +274,22 @@ class DBHelper {
 
                 if (reviews.length > 0) {
                     const filter_reviews = reviews.filter(r => r.restaurant_id === id);
-                    if (filter_reviews) { // Got the reviews
+
+                    if (filter_reviews.length > 0) { // Got the reviews
                         callback(null, filter_reviews);
                     } else { // Reviews does not exist in the database
-                        callback('Reviews does not exist', null);
-                    }
 
-                } else {
+                        // In case of an empty DB, fetch reviews from the network
+                        console.log('db is empty');
+                        DBHelper.fetchReviewsFromNetwork(id, (error, reviews) => {
+                            if (reviews != null) {
+                                DBHelper.storeReviewsInDatabase(reviews)
+                            }
+                            callback(error, reviews);
+                        });
+                    }
+                } else { // Reviews does not exist in the database
+// TODO: make method for case when have to go network and store in database
                     // In case of an empty DB, fetch reviews from the network
                     console.log('db is empty');
                     DBHelper.fetchReviewsFromNetwork(id, (error, reviews) => {
@@ -348,7 +357,6 @@ class DBHelper {
      * Send waiting data when online.
      */
     static sendDataWhenOnline(offline_review) {
-        console.log('Offline OBJ', offline_review);
 
         this.storeNewDelayReviewInDatabase(offline_review);
 
@@ -368,7 +376,6 @@ class DBHelper {
             [...document.querySelectorAll(".reviews_offline")]
                 .forEach(el => {
                     el.classList.remove("reviews_offline");
-                    el.querySelector(".offline_label").remove()
                 });
 
             if (delayReviews !== null) {
@@ -376,8 +383,6 @@ class DBHelper {
                 if (offline_review.name === 'addReview') {
                     DBHelper.pushReview(offline_review.data);
                 }
-
-                console.log('LocalState: data sent to api');
 
                 dbPromise.then(db => {
                     const tx = db.transaction(delayStore, 'readwrite');
