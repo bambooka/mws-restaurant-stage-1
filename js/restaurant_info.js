@@ -202,42 +202,31 @@ getParameterByName = (name, url) => {
 
 addReview = () => {
     event.preventDefault();
-    let restaurantId = getParameterByName('id');
-    let name = document.getElementById('reviewer-name').value;
-    let rating = document.querySelector('#rating_score').value;
-    let comments = document.getElementById('text-review').value;
-
-    const review = [name, rating, comments, restaurantId];
-
 
     const doneDataForReview = {
-        restaurant_id: parseInt(review[3]),
-        rating: parseInt(review[1]),
-        name: review[0],
-        comments: review[2].substring(0, 300),
+        restaurant_id: parseInt(getParameterByName('id')),
+        rating: parseInt(document.querySelector('#rating_score').value),
+        name: document.getElementById('reviewer-name').value,
+        comments: document.getElementById('text-review').value.substring(0, 300),
         createdAt: new Date()
     };
 
-    console.log(doneDataForReview);
-
     if (navigator.onLine) {
+        // store review only in the regular store
         DBHelper.storeNewReviewInDatabase(doneDataForReview);
     } else {
-        //store review in regular the store
+        //store review in the regular store and delay store
         DBHelper.storeNewReviewInDatabase(doneDataForReview);
-        // store review in store for delay upload to server
         DBHelper.storeNewDelayReviewInDatabase(doneDataForReview);
 
     }
 
+    // push reviews to server and add it on the page
     DBHelper.pushReview(doneDataForReview);
     addReviewHTML(doneDataForReview);
 
     //clean the form after submit review
     document.getElementById('review-form').reset();
-
-
-
 };
 
 // put new review in top

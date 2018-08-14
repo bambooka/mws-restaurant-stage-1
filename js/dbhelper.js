@@ -333,38 +333,14 @@ class DBHelper {
     }
 
     /**
-     * Filter reviews by restaurant id
-     */
-    static filterReviewsByRestaurantId(id, callback) {
-        return DBHelper.fetchReviews((error, reviews) => {
-
-            if (error) {
-                callback(error, null);
-            } else {
-                const filter_reviews = reviews.filter(r => r.restaurant_id === id);
-                if (filter_reviews) { // Got the reviews
-                    callback(null, filter_reviews);
-                } else { // Reviews does not exist in the database
-                    callback('Reviews does not exist', null);
-                }
-            }
-
-        });
-
-    }
-
-    /**
      * Send waiting data when online.
      */
     static sendDataWhenOnline(offline_review) {
 
-        this.storeNewDelayReviewInDatabase(offline_review);
+        // put review into delay store in the database
+        DBHelper.storeNewDelayReviewInDatabase(offline_review);
 
-        console.log(`indexed db: ${offline_review.object_type} stored`);
-
-        window.addEventListener('online', (event) => {
-
-            console.log('Browser: Online again!');
+        window.addEventListener('online', () => {
 
             let delayReviews = dbPromise.then(db => {
                 db.transaction(delayStore, 'readwrite').objectStore(delayStore).getAll().then(reviews => {
@@ -373,23 +349,21 @@ class DBHelper {
 
             });
 
+            // remove class for offline reviews
             [...document.querySelectorAll(".reviews_offline")]
-                .forEach(el => {
-                    el.classList.remove("reviews_offline");
+                .forEach(review_offline => {
+                    review_offline.classList.remove("reviews_offline");
                 });
 
+            // push to server and clear delay store
             if (delayReviews !== null) {
 
-                if (offline_review.name === 'addReview') {
-                    DBHelper.pushReview(offline_review.data);
-                }
+                DBHelper.pushReview(offline_review.data);
 
                 dbPromise.then(db => {
                     const tx = db.transaction(delayStore, 'readwrite');
                     tx.objectStore(delayStore).clear();
                 });
-
-                console.log(`indexed db: ${offline_review.object_type} removed`);
             }
         });
     }
@@ -405,6 +379,9 @@ class DBHelper {
         })
     }
 
+    /**
+     * Store New Review in delay store in the database.
+     */
     static storeNewDelayReviewInDatabase(review) {
 
         dbPromise.then(db => {
@@ -414,22 +391,19 @@ class DBHelper {
     }
 
     /**
-     * push review to server
+     * Push review to server
      */
     static pushReview(review) {
 
         let offline_review = {
-            name: 'addReview',
             data: review,
             object_type: 'review'
         };
 
-        // Check if online
-        if (!navigator.onLine && (offline_review.name === 'addReview')) {
+        if (!navigator.onLine) {
             DBHelper.sendDataWhenOnline(offline_review);
             return;
         }
-
 
         let reviewSend = {
             'restaurant_id': parseInt(review.restaurant_id),
@@ -438,36 +412,22 @@ class DBHelper {
             'comments': review.comments
         };
 
-        console.log('Sending review: ', reviewSend);
-
-        var fetch_data = {
+        let fetch_data = {
             method: 'POST',
             body: JSON.stringify(reviewSend),
-            headers: new Headers({
-                'Content-Type': 'application/json'
-            })
+            headers: new Headers({'Content-Type': 'application/json'})
         };
 
-        console.log('Sending review: ', fetch_data.body);
-
-        // отправка нового отзыва на сервер
-
+        // request to server for sending review
         fetch(`http://localhost:1337/reviews`, fetch_data).then((response) => {
             const contentType = response.headers.get('content-type');
 
             if (contentType && contentType.indexOf('application/json') !== -1) {
                 return response.json();
             } else {
-                return 'API call successfull'
+                return 'Something went wrong'
             }
         })
-            .then((data) => {
-
-                console.log(`${data} Fetch successful!`)
-            })
-            .catch(error => console.log('error:', error));
-
-
     }
 
 
