@@ -25,7 +25,7 @@ fetchNeighborhoods = () => {
             fillNeighborhoodsHTML();
         }
     });
-}
+};
 
 /**
  * Set neighborhoods HTML.
@@ -38,7 +38,7 @@ fillNeighborhoodsHTML = (neighborhoods = self.neighborhoods) => {
         option.value = neighborhood;
         select.append(option);
     });
-}
+};
 
 /**
  * Fetch all cuisines and set their HTML.
@@ -52,7 +52,7 @@ fetchCuisines = () => {
             fillCuisinesHTML();
         }
     });
-}
+};
 
 /**
  * Set cuisines HTML.
@@ -66,7 +66,7 @@ fillCuisinesHTML = (cuisines = self.cuisines) => {
         option.value = cuisine;
         select.append(option);
     });
-}
+};
 
 /**
  * Initialize Google map, called from HTML.
@@ -82,7 +82,7 @@ window.initMap = () => {
         scrollwheel: false
     });
     addMarkersToMap();
-}
+};
 
 /**
  * Update page and map for current restaurants.
@@ -105,7 +105,7 @@ updateRestaurants = () => {
             fillRestaurantsHTML();
         }
     })
-}
+};
 
 /**
  * Clear current restaurants, their HTML and remove their map markers.
@@ -120,7 +120,7 @@ resetRestaurants = (restaurants) => {
     self.markers.forEach(m => m.setMap(null));
     self.markers = [];
     self.restaurants = restaurants;
-}
+};
 
 /**
  * Create all restaurants HTML and add them to the webpage.
@@ -130,7 +130,7 @@ fillRestaurantsHTML = (restaurants = self.restaurants) => {
     restaurants.forEach(restaurant => {
         ul.append(createRestaurantHTML(restaurant));
     });
-}
+};
 
 /**
  * Create restaurant HTML.
@@ -190,7 +190,7 @@ createRestaurantHTML = (restaurant) => {
     li.append(more);
 
     return li
-}
+};
 
 /**
  * Add markers for current restaurants to the map.
@@ -211,7 +211,6 @@ addMarkersToMap = (restaurants = self.restaurants) => {
  */
 document.getElementById('showMap').addEventListener('click', (event) => {
     // TODO: there should be a way to refer to the click source
-    // event.fromElement.hide...
     document.getElementById('showMap').style.display = 'none';
 
     // TODO: consider hiding one of the elements (to also hide its children)
