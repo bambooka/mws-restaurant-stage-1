@@ -53,23 +53,22 @@
     <!-- end restaurant -->
     <!-- Beginning reviews -->
 
-    <form id="review-form">
+    <form aria-label="From for addition reviews" id="review-form">
         <h3>Add new review</h3>
-        <input type="text" id="reviewer-name" name="Name" placeholder="Your name"><br>
+        <input type="text" aria-label="Type your name" id="reviewer-name" name="Name" placeholder="Your name"><br>
         <label for="rating_score">Rating</label><br>
-        <select id="rating_score" name="Rating">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
+        <select id="rating_score" aria-label="rate the restaurant" name="Rating">
+            <option aria-label="one" value="1">1</option>
+            <option aria-label="two" value="2">2</option>
+            <option aria-label="three" value="3">3</option>
+            <option aria-label="four" value="4">4</option>
+            <option aria-label="five" value="5">5</option>
         </select><br>
-        <textarea id="text-review" name="Text review" placeholder="Type review to here"></textarea><br>
-        <input type="submit" id="submit-review" onclick="addReview()" value="Submit review">
+        <textarea aria-label="Type your reviews to here" id="text-review" name="Text review" placeholder="Type review to here"></textarea><br>
+        <input aria-label="Submit the review" type="submit" id="submit-review" onclick="addReview()" value="Submit review">
     </form>
 
     <section id="reviews-container">
-        <div id="warning_offline">You are offline</div>
         <ul aria-label="restaurants reviews" id="reviews-list"></ul>
     </section>
     <!-- End reviews -->
