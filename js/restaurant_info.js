@@ -236,7 +236,6 @@ addReviewHTML = (review) => {
     const container = document.getElementById('reviews-container');
     const ul = document.getElementById('reviews-list');
 
-
-    ul.insertBefore(createReviewHTML(review), ul.firstChild);
+    ul.appendChild(createReviewHTML(review));
     container.appendChild(ul);
 };
