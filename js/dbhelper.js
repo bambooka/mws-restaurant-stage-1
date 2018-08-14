@@ -355,6 +355,8 @@ class DBHelper {
                     review_offline.classList.remove("reviews_offline");
                 });
 
+            document.getElementById('warning_offline').style.display = 'none';
+
             // push to server and clear delay store
             if (delayReviews !== null) {
 

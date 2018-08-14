@@ -219,6 +219,7 @@ addReview = () => {
         DBHelper.storeNewReviewInDatabase(doneDataForReview);
         DBHelper.storeNewDelayReviewInDatabase(doneDataForReview);
 
+        document.getElementById('warning_offline').style.display = 'block';
     }
 
     // push reviews to server and add it on the page
