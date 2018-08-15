@@ -1,6 +1,6 @@
-const CACHE = 'cache';
+const CACHE = 'cache-v1';
+
 var toCache = [
-    '/',
     'index.html',
     'restaurant.html?id=1',
     'restaurant.html?id=2',
@@ -13,9 +13,7 @@ var toCache = [
     'restaurant.html?id=9',
     'restaurant.html?id=10',
     './dist/style.min.css',
-    './js/index.js',
     './js/main.js',
-    './js/idb.js',
     './js/restaurant_info.js',
     './js/dbhelper.js',
     './img/placeholder.jpg',
@@ -37,7 +35,7 @@ var toCache = [
     './img/small5.jpg',
     './img/small6.jpg',
     './img/small7.jpg',
-    './img/small9.jpg',
+    './img/small8.jpg',
     './img/small9.jpg',
     './img/small10.jpg'
 ];
@@ -70,7 +68,6 @@ self.addEventListener('activate', function (event) {
 });
 
 // Extract from cache
-
 self.addEventListener('fetch', event => {
     event.respondWith(
         fetch(event.request).catch(() => {
@@ -79,9 +76,8 @@ self.addEventListener('fetch', event => {
     );
 });
 
-
-self.addEventListener('message', function (event) {
-    if (event.data.action === 'skipWaiting') {
-        self.skipWaiting();
-    }
-});
+// self.addEventListener('message', function (event) {
+//     if (event.data.action === 'skipWaiting') {
+//         self.skipWaiting();
+//     }
+// });
