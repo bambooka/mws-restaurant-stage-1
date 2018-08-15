@@ -1,7 +1,7 @@
 {
     "short_name": "RestoReviews",
     "name": "Restaurant Review",
-    "start_url": "index.html",
+    "start_url": "http://restaurant-reviews.localhost/",
     "background_color": "blue",
     "theme_color": "#262932",
     "display": "fullscreen",
