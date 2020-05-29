@@ -35,7 +35,7 @@ class DBHelper {
     static get DATABASE_URL() {
         const port = 1337;
         const domain = '54.193.16.69';
-        return `http://${domain}:${port}`;
+        return `http://54.193.16.69:${port}`;
     }
 
     /**
@@ -72,8 +72,11 @@ class DBHelper {
      */
     static fetchRestaurantsFromNetwork(callback) {
         let fetchURL = `${DBHelper.DATABASE_URL}/restaurants`;
+        console.log(fetchURL)
         fetch(fetchURL, {method: 'GET'}).then(response => {
+            console.log(response)
             response.json().then(restaurants => {
+                console.log(restaurants)
                 restaurants.forEach(r => {
                     r.is_favorite = r.is_favorite === 'true';
                 });
@@ -216,6 +219,7 @@ class DBHelper {
      * Restaurant image URL.
      */
     static imageUrlForRestaurant(restaurant) {
+        console.log(`/img/${restaurant.photograph}.jpg`);
         return restaurant.photograph ? `/img/${restaurant.photograph}.jpg` : '/img/placeholder.jpg';
     }
 
@@ -269,9 +273,7 @@ class DBHelper {
         dbPromise.then(db => {
             db.transaction(reviewStore).objectStore(reviewStore)
                 .getAll().then(reviews => {
-
                 console.log(reviews);
-
                 if (reviews.length > 0) {
                     const filter_reviews = reviews.filter(r => r.restaurant_id === id);
 
