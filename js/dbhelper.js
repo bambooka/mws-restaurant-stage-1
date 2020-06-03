@@ -37,7 +37,7 @@ class DBHelper {
         // const domain = '54.193.16.69';
         // return `https://54.193.16.69:${port}`;
         const port = 1337;
-        const domain = 'localhost';
+        const domain = 'http://localhost';
         return `${domain}:${port}`
     }
 
