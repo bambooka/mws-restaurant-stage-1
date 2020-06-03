@@ -3,6 +3,23 @@
 
 <head>
     <meta charset="utf-8">
+
+    <!-- подключаем стили Mocha, для отображения результатов -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/mocha/2.1.0/mocha.css">
+    <!-- подключаем библиотеку Mocha -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mocha/2.1.0/mocha.js"></script>
+    <!-- настраиваем Mocha: предстоит BDD-тестирование -->
+    <script>
+      mocha.setup('bdd');
+    </script>
+
+    <!-- подключаем chai -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chai/2.0.0/chai.js"></script>
+    <!-- в chai есть много всего, выносим assert в глобальную область -->
+    <script>
+      var assert = chai.assert;
+    </script>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#317EFB"/>
     <meta name="Description" content="Restaurant Reviews Application">
@@ -17,7 +34,7 @@
 <header aria-label="header">
     <nav aria-label="navigation to main page">
         <h1><a href="/">Restaurant Reviews</a></h1>
-    </nav>
+    </nav> 1
 </header>
 
 <main id="maincontent">
@@ -44,11 +61,21 @@
         <ul id="restaurants-list"></ul>
     </section>
 </main>
-
+<script type="text/javascript" src="https://www.turnjs.com/lib/turn.min.js "></script>
 <script type="application/javascript" charset="utf-8" src="js/idb.js"></script>
 <script type="application/javascript" charset="utf-8" src="js/dbhelper.js"></script>
 <script type="application/javascript" charset="utf-8" src="js/main.js"></script>
 <script type="application/javascript" charset="utf-8" src="js/index.js"></script>
+
+<!--<script src="test.js"></script>-->
+
+<!--&lt;!&ndash; в элементе с id="mocha" будут результаты тестов &ndash;&gt;-->
+<!--<div id="mocha"></div>-->
+
+<!--&lt;!&ndash; запустить тесты! &ndash;&gt;-->
+<!--<script>-->
+<!--  mocha.run();-->
+<!--</script>-->
 
 <footer id="footer">
     Copyright (c) 2017 <a href="/"><strong>Restaurant Reviews</strong></a> All Rights Reserved.

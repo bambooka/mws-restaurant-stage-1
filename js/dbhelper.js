@@ -33,9 +33,12 @@ class DBHelper {
      * Database URL.
      */
     static get DATABASE_URL() {
-        const port = 443;
-        const domain = '54.193.16.69';
-        return `https://54.193.16.69:${port}`;
+        // const port = 443;
+        // const domain = '54.193.16.69';
+        // return `https://54.193.16.69:${port}`;
+        const port = 1337;
+        const domain = 'localhost';
+        return `${domain}:${port}`
     }
 
     /**
@@ -47,7 +50,7 @@ class DBHelper {
         dbPromise.then(db => {
             db.transaction(restaurantStore).objectStore(restaurantStore)
                 .getAll().then(restaurants => {
-
+console.log(restaurants)
                 if (restaurants.length > 0) {
                     callback(null, restaurants);
                     return;
@@ -76,6 +79,7 @@ class DBHelper {
         fetch(fetchURL, {method: 'GET'}).then(response => {
             console.log(response)
             response.json().then(restaurants => {
+                console.log(restaurants)
                 console.log(restaurants)
                 restaurants.forEach(r => {
                     r.is_favorite = r.is_favorite === 'true';
