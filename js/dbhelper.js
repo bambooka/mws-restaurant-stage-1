@@ -33,12 +33,13 @@ class DBHelper {
      * Database URL.
      */
     static get DATABASE_URL() {
-        // const port = 443;
-        // const domain = '54.193.16.69';
-        // return `https://54.193.16.69:${port}`;
-        const port = 1337;
-        const domain = 'http://localhost';
-        return `${domain}:${port}`
+        const port = 443;
+        const domain = '52-52-250-106';
+        // return `https://52-52-250-106:${port}`;
+        // const port = 1337;
+        // const domain = 'http://localhost';
+        // return `${domain}:${port}`
+        return 'http://ec2-52-52-250-106.us-west-1.compute.amazonaws.com:443'
     }
 
     /**
@@ -50,7 +51,6 @@ class DBHelper {
         dbPromise.then(db => {
             db.transaction(restaurantStore).objectStore(restaurantStore)
                 .getAll().then(restaurants => {
-console.log(restaurants)
                 if (restaurants.length > 0) {
                     callback(null, restaurants);
                     return;
@@ -75,12 +75,9 @@ console.log(restaurants)
      */
     static fetchRestaurantsFromNetwork(callback) {
         let fetchURL = `${DBHelper.DATABASE_URL}/restaurants`;
-        console.log(fetchURL)
         fetch(fetchURL, {method: 'GET'}).then(response => {
             console.log(response)
             response.json().then(restaurants => {
-                console.log(restaurants)
-                console.log(restaurants)
                 restaurants.forEach(r => {
                     r.is_favorite = r.is_favorite === 'true';
                 });
@@ -95,7 +92,6 @@ console.log(restaurants)
      * Store restaurants into the database
      */
     static storeRestaurantsInDatabase(restaurants) {
-        console.log('store restaurants in the db');
         dbPromise.then(db => {
             const tx = db.transaction(restaurantStore, 'readwrite');
             restaurants.forEach(restaurant => {
