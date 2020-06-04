@@ -34,8 +34,8 @@ class DBHelper {
      */
     static get DATABASE_URL() {
         const port = 443;
-        const domain = '52-52-250-106';
-        return `https://52-52-250-106:${port}`;
+        const domain = '52.52.250.106';
+        return `https://52.52.250.106:${port}`;
         // const port = 1337;
         // const domain = 'http://localhost';
         // return `${domain}:${port}`
