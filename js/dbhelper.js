@@ -35,11 +35,11 @@ class DBHelper {
     static get DATABASE_URL() {
         const port = 443;
         const domain = '52-52-250-106';
-        // return `https://52-52-250-106:${port}`;
+        return `https://52-52-250-106:${port}`;
         // const port = 1337;
         // const domain = 'http://localhost';
         // return `${domain}:${port}`
-        return 'http://ec2-52-52-250-106.us-west-1.compute.amazonaws.com:443'
+        // return 'http://ec2-52-52-250-106.us-west-1.compute.amazonaws.com:443'
     }
 
     /**
