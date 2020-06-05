@@ -34,7 +34,7 @@ class DBHelper {
      */
     static get DATABASE_URL() {
         const port = 443;
-        const domain = 'api.restoguide.bambooka.xyz';
+        const domain = 'https://api.restoguide.bambooka.xyz';
         return `${domain}:${port}`;
     }
 
