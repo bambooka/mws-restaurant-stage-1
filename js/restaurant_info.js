@@ -130,12 +130,12 @@ fillRestaurantHoursHTML = (operatingHours = self.restaurant.operating_hours) => 
 fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     const container = document.getElementById('reviews-container');
     const title = document.createElement('h3');
-    title.innerHTML = 'Reviews';
+    title.innerHTML = 'Отзывы';
     container.appendChild(title);
 
     if (!reviews) {
         const noReviews = document.createElement('p');
-        noReviews.innerHTML = 'No reviews yet!';
+        noReviews.innerHTML = 'Ваш отзыв будет первым';
         container.appendChild(noReviews);
         return;
     }
