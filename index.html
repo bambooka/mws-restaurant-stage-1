@@ -38,22 +38,22 @@
 </header>
 
 <main id="maincontent">
-    <button id="showMap">Show Map</button>
+    <button id="showMap">Показать карту</button>
     <section role="application" aria-label="google maps" id="map-container">
         <div id="map"></div>
     </section>
     <section>
         <div class="filter-options">
-            <h2>Filter Results</h2>
+            <h2>Сортировать по:</h2>
 
             <select aria-label="neighborhoods select" id="neighborhoods-select" name="neighborhoods"
                     onchange="updateRestaurants()">
-                <option value="all">All Neighborhoods</option>
+                <option value="all">Все районы</option>
             </select>
             <label for="neighborhoods-select"></label>
 
             <select aria-label="cuisines select" id="cuisines-select" name="cuisines" onchange="updateRestaurants()">
-                <option value="all">All Cuisines</option>
+                <option value="all">Все кухни</option>
             </select>
             <label for="cuisines-select"></label>
 
