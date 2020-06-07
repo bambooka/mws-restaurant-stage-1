@@ -176,7 +176,7 @@ createRestaurantHTML = (restaurant) => {
     li.append(favorite_mark);
 
     const neighborhood = document.createElement('p');
-    neighborhood.innerHTML = restaurant.neighborhood;
+    neighborhood.innerHTML = `${restaurant.neighborhood} район`;
     li.append(neighborhood);
 
     const address = document.createElement('p');
