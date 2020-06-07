@@ -225,7 +225,8 @@ class DBHelper {
      */
     static imageSrcSetForRestaurant(restaurant) {
         let photoId = restaurant.photograph ? restaurant.photograph : 'placeholder';
-        return `/img/small${photoId}.jpg 550w, /img/${photoId}.jpg 1000w`;
+        // return `/img/small${photoId}.jpg 550w, /img/${photoId}.jpg 1000w`;
+        return `${restaurant.photograph} 550w, ${restaurant.photograph} 1000w`;
     }
 
     static imageAltForRestaurant(restaurant) {
